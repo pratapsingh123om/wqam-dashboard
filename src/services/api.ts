@@ -1,10 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
 
-// Centralized API configuration
-// Change baseURL for production deployment
 const api = axios.create({
-  baseURL: 'http://localhost:8000',
-  timeout: 60000,
+  baseURL: import.meta.env.VITE_API_BASE || "http://localhost:8000",
+  withCredentials: false,
 });
 
 export default api;
