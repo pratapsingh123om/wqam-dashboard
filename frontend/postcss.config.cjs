@@ -1,4 +1,15 @@
-// Try new @tailwindcss/postcss plugin, fall back to classic tailwindcss if not installed.
+// T
+// ry new @tailwindcss/postcss plugin, fall back to classic tailwindcss if not installed.
+import tailwind from '@tailwindcss/postcss';
+import autoprefixer from 'autoprefixer';
+
+export default {
+  plugins: [
+    tailwind(),
+    autoprefixer(),
+  ],
+};
+
 let tailwindPlugin;
 try {
   tailwindPlugin = require('@tailwindcss/postcss');

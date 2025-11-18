@@ -1,0 +1,13 @@
+﻿{
+    "sampleFilters":  [
+                          "last_24h",
+                          "last_7d",
+                          "last_30d"
+                      ],
+    "generatedAt":  "2025-11-13T20:38:34.5036258+05:30",
+    "descriptions":  {
+                         "velocity":  "Velocity in m/s",
+                         "pressure":  "Pressure in kPa",
+                         "temperature":  "Temperature sensor readings in Â°C"
+                     }
+}

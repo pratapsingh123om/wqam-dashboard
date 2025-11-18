@@ -1,0 +1,6 @@
+[
+  {"param": "Temperature", "unit": "°C"},
+  {"param": "Pressure", "unit": "bar"},
+  {"param": "Humidity", "unit": "%"},
+  {"param": "pH", "unit": ""}
+]

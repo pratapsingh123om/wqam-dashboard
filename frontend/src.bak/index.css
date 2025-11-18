@@ -1,0 +1,44 @@
+/* Import font */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap");
+
+/* Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global tweaks */
+:root {
+  --accent-1: #7c3aed;  /* purple */
+  --accent-2: #06b6d4;  /* teal */
+  --glass-bg: rgba(255,255,255,0.06);
+  --glass-border: rgba(255,255,255,0.08);
+}
+
+html, body, #root {
+  height: 100%;
+  font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* App background */
+.app-bg {
+  background: linear-gradient(180deg, rgba(124,58,237,0.08) 0%, rgba(6,182,212,0.04) 50%, rgba(2,6,23,0.04) 100%), radial-gradient(800px 400px at 10% 10%, rgba(124,58,237,0.06), transparent 25%), radial-gradient(900px 400px at 90% 90%, rgba(6,182,212,0.04), transparent 20%);
+}
+
+/* Glass card */
+.glass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Metric accent pill */
+.metric-pill {
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* small helpers */
+.card-hover:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(2,6,23,0.12) }
+.transition-smooth { transition: all 220ms cubic-bezier(.2,.9,.3,1); }
