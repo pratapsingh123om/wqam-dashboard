@@ -1,0 +1,356 @@
+REPO CHECK REPORT
+Root: C:\Users\gsr33\wqam-dashboard
+
+Top-level entries:
+.git, .gitignore, .venv, Dockerfile.frontend, QUICK_START.md, README.md, README_UPGRADE.md, UPGRADE_README.md, WINDOWS_SETUP.md, backend, docker, docker-compose.yml, eslint.config.js, frontend, index.html.bak, node_modules, package-lock.json, package.json, package.json.bak, repo.py, repo_check_report.txt, repo_inspect.py, sample_data, src, t.ps1, tools, upgrade_dashboard.ps1, upgrade_dashboard.sh
+
+Frontend directory listing (first-level):
+.env, Dockerfile, index.html, index.html.bak, node_modules, package-lock.json, package.json, postcss.config.cjs, postcss.config.js, public, src, src.bak, tailwind.config.cjs, tailwind.config.js, tsconfig.app.json, tsconfig.json, tsconfig.node.json, vite.config.ts
+
+Frontend tree (depth=2):
+  . -> dirs: ['node_modules', 'public', 'src', 'src.bak'] files: ['.env', 'Dockerfile', 'index.html', 'index.html.bak', 'package-lock.json', 'package.json', 'postcss.config.cjs', 'postcss.config.js', 'tailwind.config.cjs', 'tailwind.config.js', 'tsconfig.app.json', 'tsconfig.json', 'tsconfig.node.json', 'vite.config.ts']
+  node_modules -> dirs: ['.bin', '@alloc', '@babel', '@esbuild', '@eslint', '@eslint-community', '@humanfs', '@humanwhocodes', '@jridgewell', '@kurkle', '@nodelib', '@reduxjs', '@rolldown', '@rollup', '@standard-schema', '@tailwindcss', '@types', '@typescript-eslint', '@vitejs', 'acorn', 'acorn-jsx', 'ajv', 'ansi-styles', 'argparse', 'asynckit', 'autoprefixer', 'axios', 'balanced-match', 'base64-arraybuffer', 'baseline-browser-mapping', 'brace-expansion', 'braces', 'browserslist', 'call-bind-apply-helpers', 'callsites', 'caniuse-lite', 'canvg', 'chalk', 'chart.js', 'chartjs-adapter-date-fns', 'class-variance-authority', 'clsx', 'color-convert', 'color-name', 'combined-stream', 'concat-map', 'convert-source-map', 'core-js', 'core-util-is', 'cross-spawn', 'css-line-break', 'csstype', 'd3-array', 'd3-color', 'd3-ease', 'd3-format', 'd3-interpolate', 'd3-path', 'd3-scale', 'd3-shape', 'd3-time', 'd3-time-format', 'd3-timer', 'date-fns', 'debug', 'decimal.js-light', 'deep-is', 'delayed-stream', 'detect-libc', 'docx', 'dompurify', 'dunder-proto', 'electron-to-chromium', 'enhanced-resolve', 'es-define-property', 'es-errors', 'es-object-atoms', 'es-set-tostringtag', 'es-toolkit', 'esbuild', 'escalade', 'escape-string-regexp', 'eslint', 'eslint-plugin-react-hooks', 'eslint-plugin-react-refresh', 'eslint-scope', 'eslint-visitor-keys', 'espree', 'esquery', 'esrecurse', 'estraverse', 'esutils', 'eventemitter3', 'fast-deep-equal', 'fast-glob', 'fast-json-stable-stringify', 'fast-levenshtein', 'fast-png', 'fastq', 'fflate', 'file-entry-cache', 'file-saver', 'fill-range', 'find-up', 'flat-cache', 'flatted', 'follow-redirects', 'form-data', 'fraction.js', 'framer-motion', 'function-bind', 'gensync', 'get-intrinsic', 'get-proto', 'glob-parent', 'globals', 'gopd', 'graceful-fs', 'graphemer', 'has-flag', 'has-symbols', 'has-tostringtag', 'hash.js', 'hasown', 'html-parse-stringify', 'html2canvas', 'i18next', 'ignore', 'immediate', 'immer', 'import-fresh', 'imurmurhash', 'inherits', 'internmap', 'iobuffer', 'is-extglob', 'is-glob', 'is-number', 'isarray', 'isexe', 'jiti', 'js-tokens', 'js-yaml', 'jsesc', 'json-buffer', 'json-schema-traverse', 'json-stable-stringify-without-jsonify', 'json5', 'jspdf', 'jszip', 'keyv', 'levn', 'lie', 'lightningcss', 'lightningcss-win32-x64-msvc', 'locate-path', 'lodash.merge', 'lru-cache', 'lucide-react', 'magic-string', 'math-intrinsics', 'merge2', 'micromatch', 'mime-db', 'mime-types', 'minimalistic-assert', 'minimatch', 'motion-dom', 'motion-utils', 'ms', 'nanoid', 'natural-compare', 'node-releases', 'normalize-range', 'optionator', 'p-limit', 'p-locate', 'pako', 'parent-module', 'path-exists', 'path-key', 'performance-now', 'picocolors', 'picomatch', 'postcss', 'postcss-value-parser', 'prelude-ls', 'process-nextick-args', 'proxy-from-env', 'punycode', 'queue-microtask', 'raf', 'react', 'react-chartjs-2', 'react-dom', 'react-i18next', 'react-is', 'react-redux', 'react-refresh', 'readable-stream', 'recharts', 'redux', 'redux-thunk', 'regenerator-runtime', 'reselect', 'resolve-from', 'reusify', 'rgbcolor', 'rollup', 'run-parallel', 'safe-buffer', 'sax', 'scheduler', 'semver', 'setimmediate', 'shebang-command', 'shebang-regex', 'source-map-js', 'stackblur-canvas', 'string_decoder', 'strip-json-comments', 'supports-color', 'svg-pathdata', 'tailwindcss', 'tapable', 'text-segmentation', 'tiny-invariant', 'tinyglobby', 'to-regex-range', 'ts-api-utils', 'tslib', 'type-check', 'typescript', 'typescript-eslint', 'undici-types', 'update-browserslist-db', 'uri-js', 'use-sync-external-store', 'util-deprecate', 'utrie', 'victory-vendor', 'vite', 'void-elements', 'which', 'word-wrap', 'xml', 'xml-js', 'yallist', 'yocto-queue'] files: ['.package-lock.json']
+  node_modules\.bin -> dirs: [] files: ['acorn', 'acorn.cmd', 'acorn.ps1', 'autoprefixer', 'autoprefixer.cmd', 'autoprefixer.ps1', 'baseline-browser-mapping', 'baseline-browser-mapping.cmd', 'baseline-browser-mapping.ps1', 'browserslist', 'browserslist.cmd', 'browserslist.ps1', 'esbuild', 'esbuild.cmd', 'esbuild.ps1', 'eslint', 'eslint.cmd', 'eslint.ps1', 'jiti', 'jiti.cmd', 'jiti.ps1', 'js-yaml', 'js-yaml.cmd', 'js-yaml.ps1', 'jsesc', 'jsesc.cmd', 'jsesc.ps1', 'json5', 'json5.cmd', 'json5.ps1', 'nanoid', 'nanoid.cmd', 'nanoid.ps1', 'node-which', 'node-which.cmd', 'node-which.ps1', 'parser', 'parser.cmd', 'parser.ps1', 'rollup', 'rollup.cmd', 'rollup.ps1', 'semver', 'semver.cmd', 'semver.ps1', 'tsc', 'tsc.cmd', 'tsc.ps1', 'tsserver', 'tsserver.cmd', 'tsserver.ps1', 'update-browserslist-db', 'update-browserslist-db.cmd', 'update-browserslist-db.ps1', 'vite', 'vite.cmd', 'vite.ps1', 'xml-js', 'xml-js.cmd', 'xml-js.ps1']
+  node_modules\@alloc -> dirs: ['quick-lru'] files: []
+  node_modules\@babel -> dirs: ['code-frame', 'compat-data', 'core', 'generator', 'helper-compilation-targets', 'helper-globals', 'helper-module-imports', 'helper-module-transforms', 'helper-plugin-utils', 'helper-string-parser', 'helper-validator-identifier', 'helper-validator-option', 'helpers', 'parser', 'plugin-transform-react-jsx-self', 'plugin-transform-react-jsx-source', 'runtime', 'template', 'traverse', 'types'] files: []
+  node_modules\@esbuild -> dirs: ['win32-x64'] files: []
+  node_modules\@eslint -> dirs: ['config-array', 'config-helpers', 'core', 'eslintrc', 'js', 'object-schema', 'plugin-kit'] files: []
+  node_modules\@eslint-community -> dirs: ['eslint-utils', 'regexpp'] files: []
+  node_modules\@humanfs -> dirs: ['core', 'node'] files: []
+  node_modules\@humanwhocodes -> dirs: ['module-importer', 'retry'] files: []
+  node_modules\@jridgewell -> dirs: ['gen-mapping', 'remapping', 'resolve-uri', 'sourcemap-codec', 'trace-mapping'] files: []
+  node_modules\@kurkle -> dirs: ['color'] files: []
+  node_modules\@nodelib -> dirs: ['fs.scandir', 'fs.stat', 'fs.walk'] files: []
+  node_modules\@reduxjs -> dirs: ['toolkit'] files: []
+  node_modules\@rolldown -> dirs: ['pluginutils'] files: []
+  node_modules\@rollup -> dirs: ['rollup-win32-x64-gnu', 'rollup-win32-x64-msvc'] files: []
+  node_modules\@standard-schema -> dirs: ['spec', 'utils'] files: []
+  node_modules\@tailwindcss -> dirs: ['node', 'oxide', 'oxide-win32-x64-msvc', 'postcss'] files: []
+  node_modules\@types -> dirs: ['babel__core', 'babel__generator', 'babel__template', 'babel__traverse', 'd3-array', 'd3-color', 'd3-ease', 'd3-interpolate', 'd3-path', 'd3-scale', 'd3-shape', 'd3-time', 'd3-timer', 'estree', 'file-saver', 'json-schema', 'node', 'pako', 'raf', 'react', 'react-dom', 'trusted-types', 'use-sync-external-store'] files: []
+  node_modules\@typescript-eslint -> dirs: ['eslint-plugin', 'parser', 'project-service', 'scope-manager', 'tsconfig-utils', 'type-utils', 'types', 'typescript-estree', 'utils', 'visitor-keys'] files: []
+  node_modules\@vitejs -> dirs: ['plugin-react'] files: []
+  node_modules\acorn -> dirs: ['bin', 'dist'] files: ['CHANGELOG.md', 'LICENSE', 'README.md', 'package.json']
+  node_modules\acorn-jsx -> dirs: [] files: ['LICENSE', 'README.md', 'index.d.ts', 'index.js', 'package.json', 'xhtml.js']
+  node_modules\ajv -> dirs: ['dist', 'lib', 'scripts'] files: ['.tonic_example.js', 'LICENSE', 'README.md', 'package.json']
+  node_modules\ansi-styles -> dirs: [] files: ['index.d.ts', 'index.js', 'license', 'package.json', 'readme.md']
+  node_modules\argparse -> dirs: ['lib'] files: ['CHANGELOG.md', 'LICENSE', 'README.md', 'argparse.js', 'package.json']
+  node_modules\asynckit -> dirs: ['lib'] files: ['LICENSE', 'README.md', 'bench.js', 'index.js', 'package.json', 'parallel.js', 'serial.js', 'serialOrdered.js', 'stream.js']
+  node_modules\autoprefixer -> dirs: ['bin', 'data', 'lib'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\axios -> dirs: ['dist', 'lib'] files: ['CHANGELOG.md', 'LICENSE', 'MIGRATION_GUIDE.md', 'README.md', 'index.d.cts', 'index.d.ts', 'index.js', 'package.json']
+  node_modules\balanced-match -> dirs: ['.github'] files: ['LICENSE.md', 'README.md', 'index.js', 'package.json']
+  node_modules\base64-arraybuffer -> dirs: ['dist'] files: ['CHANGELOG.md', 'LICENSE', 'README.md', 'package.json', 'rollup.config.ts']
+  node_modules\baseline-browser-mapping -> dirs: ['dist'] files: ['LICENSE.txt', 'README.md', 'package.json']
+  node_modules\brace-expansion -> dirs: [] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\braces -> dirs: ['lib'] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\browserslist -> dirs: [] files: ['LICENSE', 'README.md', 'browser.js', 'cli.js', 'error.d.ts', 'error.js', 'index.d.ts', 'index.js', 'node.js', 'package.json', 'parse.js']
+  node_modules\call-bind-apply-helpers -> dirs: ['.github', 'test'] files: ['.eslintrc', '.nycrc', 'CHANGELOG.md', 'LICENSE', 'README.md', 'actualApply.d.ts', 'actualApply.js', 'applyBind.d.ts', 'applyBind.js', 'functionApply.d.ts', 'functionApply.js', 'functionCall.d.ts', 'functionCall.js', 'index.d.ts', 'index.js', 'package.json', 'reflectApply.d.ts', 'reflectApply.js', 'tsconfig.json']
+  node_modules\callsites -> dirs: [] files: ['index.d.ts', 'index.js', 'license', 'package.json', 'readme.md']
+  node_modules\caniuse-lite -> dirs: ['data', 'dist'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\canvg -> dirs: ['lib'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\chalk -> dirs: ['source'] files: ['index.d.ts', 'license', 'package.json', 'readme.md']
+  node_modules\chart.js -> dirs: ['auto', 'dist', 'helpers'] files: ['LICENSE.md', 'README.md', 'package.json']
+  node_modules\chartjs-adapter-date-fns -> dirs: ['dist'] files: ['LICENSE.md', 'README.md', 'package.json']
+  node_modules\class-variance-authority -> dirs: ['dist'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\clsx -> dirs: ['dist'] files: ['clsx.d.mts', 'clsx.d.ts', 'license', 'package.json', 'readme.md']
+  node_modules\color-convert -> dirs: [] files: ['CHANGELOG.md', 'LICENSE', 'README.md', 'conversions.js', 'index.js', 'package.json', 'route.js']
+  node_modules\color-name -> dirs: [] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\combined-stream -> dirs: ['lib'] files: ['License', 'Readme.md', 'package.json', 'yarn.lock']
+  node_modules\concat-map -> dirs: ['example', 'test'] files: ['.travis.yml', 'LICENSE', 'README.markdown', 'index.js', 'package.json']
+  node_modules\convert-source-map -> dirs: [] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\core-js -> dirs: ['actual', 'es', 'features', 'full', 'internals', 'modules', 'proposals', 'stable', 'stage', 'web'] files: ['LICENSE', 'README.md', 'configurator.js', 'index.js', 'package.json', 'postinstall.js']
+  node_modules\core-util-is -> dirs: ['lib'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\cross-spawn -> dirs: ['lib'] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\css-line-break -> dirs: ['dist'] files: ['CHANGELOG.md', 'LICENSE', 'README.md', 'package.json', 'rollup.config.ts']
+  node_modules\csstype -> dirs: [] files: ['LICENSE', 'README.md', 'index.d.ts', 'index.js.flow', 'package.json']
+  node_modules\d3-array -> dirs: ['dist', 'src'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\d3-color -> dirs: ['dist', 'src'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\d3-ease -> dirs: ['dist', 'src'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\d3-format -> dirs: ['dist', 'locale', 'src'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\d3-interpolate -> dirs: ['dist', 'src'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\d3-path -> dirs: ['dist', 'src'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\d3-scale -> dirs: ['dist', 'src'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\d3-shape -> dirs: ['dist', 'src'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\d3-time -> dirs: ['dist', 'src'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\d3-time-format -> dirs: ['dist', 'locale', 'src'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\d3-timer -> dirs: ['dist', 'src'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\date-fns -> dirs: ['_lib', 'docs', 'fp', 'locale', 'parse'] files: ['CHANGELOG.md', 'LICENSE.md', 'README.md', 'SECURITY.md', 'add.cjs', 'add.d.cts', 'add.d.ts', 'add.js', 'addBusinessDays.cjs', 'addBusinessDays.d.cts', 'addBusinessDays.d.ts', 'addBusinessDays.js', 'addDays.cjs', 'addDays.d.cts', 'addDays.d.ts', 'addDays.js', 'addHours.cjs', 'addHours.d.cts', 'addHours.d.ts', 'addHours.js', 'addISOWeekYears.cjs', 'addISOWeekYears.d.cts', 'addISOWeekYears.d.ts', 'addISOWeekYears.js', 'addMilliseconds.cjs', 'addMilliseconds.d.cts', 'addMilliseconds.d.ts', 'addMilliseconds.js', 'addMinutes.cjs', 'addMinutes.d.cts', 'addMinutes.d.ts', 'addMinutes.js', 'addMonths.cjs', 'addMonths.d.cts', 'addMonths.d.ts', 'addMonths.js', 'addQuarters.cjs', 'addQuarters.d.cts', 'addQuarters.d.ts', 'addQuarters.js', 'addSeconds.cjs', 'addSeconds.d.cts', 'addSeconds.d.ts', 'addSeconds.js', 'addWeeks.cjs', 'addWeeks.d.cts', 'addWeeks.d.ts', 'addWeeks.js', 'addYears.cjs', 'addYears.d.cts', 'addYears.d.ts', 'addYears.js', 'areIntervalsOverlapping.cjs', 'areIntervalsOverlapping.d.cts', 'areIntervalsOverlapping.d.ts', 'areIntervalsOverlapping.js', 'cdn.js', 'cdn.js.map', 'cdn.min.js', 'cdn.min.js.map', 'clamp.cjs', 'clamp.d.cts', 'clamp.d.ts', 'clamp.js', 'closestIndexTo.cjs', 'closestIndexTo.d.cts', 'closestIndexTo.d.ts', 'closestIndexTo.js', 'closestTo.cjs', 'closestTo.d.cts', 'closestTo.d.ts', 'closestTo.js', 'compareAsc.cjs', 'compareAsc.d.cts', 'compareAsc.d.ts', 'compareAsc.js', 'compareDesc.cjs', 'compareDesc.d.cts', 'compareDesc.d.ts', 'compareDesc.js', 'constants.cjs', 'constants.d.cts', 'constants.d.ts', 'constants.js', 'constructFrom.cjs', 'constructFrom.d.cts', 'constructFrom.d.ts', 'constructFrom.js', 'constructNow.cjs', 'constructNow.d.cts', 'constructNow.d.ts', 'constructNow.js', 'daysToWeeks.cjs', 'daysToWeeks.d.cts', 'daysToWeeks.d.ts', 'daysToWeeks.js', 'differenceInBusinessDays.cjs', 'differenceInBusinessDays.d.cts', 'differenceInBusinessDays.d.ts', 'differenceInBusinessDays.js', 'differenceInCalendarDays.cjs', 'differenceInCalendarDays.d.cts', 'differenceInCalendarDays.d.ts', 'differenceInCalendarDays.js', 'differenceInCalendarISOWeekYears.cjs', 'differenceInCalendarISOWeekYears.d.cts', 'differenceInCalendarISOWeekYears.d.ts', 'differenceInCalendarISOWeekYears.js', 'differenceInCalendarISOWeeks.cjs', 'differenceInCalendarISOWeeks.d.cts', 'differenceInCalendarISOWeeks.d.ts', 'differenceInCalendarISOWeeks.js', 'differenceInCalendarMonths.cjs', 'differenceInCalendarMonths.d.cts', 'differenceInCalendarMonths.d.ts', 'differenceInCalendarMonths.js', 'differenceInCalendarQuarters.cjs', 'differenceInCalendarQuarters.d.cts', 'differenceInCalendarQuarters.d.ts', 'differenceInCalendarQuarters.js', 'differenceInCalendarWeeks.cjs', 'differenceInCalendarWeeks.d.cts', 'differenceInCalendarWeeks.d.ts', 'differenceInCalendarWeeks.js', 'differenceInCalendarYears.cjs', 'differenceInCalendarYears.d.cts', 'differenceInCalendarYears.d.ts', 'differenceInCalendarYears.js', 'differenceInDays.cjs', 'differenceInDays.d.cts', 'differenceInDays.d.ts', 'differenceInDays.js', 'differenceInHours.cjs', 'differenceInHours.d.cts', 'differenceInHours.d.ts', 'differenceInHours.js', 'differenceInISOWeekYears.cjs', 'differenceInISOWeekYears.d.cts', 'differenceInISOWeekYears.d.ts', 'differenceInISOWeekYears.js', 'differenceInMilliseconds.cjs', 'differenceInMilliseconds.d.cts', 'differenceInMilliseconds.d.ts', 'differenceInMilliseconds.js', 'differenceInMinutes.cjs', 'differenceInMinutes.d.cts', 'differenceInMinutes.d.ts', 'differenceInMinutes.js', 'differenceInMonths.cjs', 'differenceInMonths.d.cts', 'differenceInMonths.d.ts', 'differenceInMonths.js', 'differenceInQuarters.cjs', 'differenceInQuarters.d.cts', 'differenceInQuarters.d.ts', 'differenceInQuarters.js', 'differenceInSeconds.cjs', 'differenceInSeconds.d.cts', 'differenceInSeconds.d.ts', 'differenceInSeconds.js', 'differenceInWeeks.cjs', 'differenceInWeeks.d.cts', 'differenceInWeeks.d.ts', 'differenceInWeeks.js', 'differenceInYears.cjs', 'differenceInYears.d.cts', 'differenceInYears.d.ts', 'differenceInYears.js', 'eachDayOfInterval.cjs', 'eachDayOfInterval.d.cts', 'eachDayOfInterval.d.ts', 'eachDayOfInterval.js', 'eachHourOfInterval.cjs', 'eachHourOfInterval.d.cts', 'eachHourOfInterval.d.ts', 'eachHourOfInterval.js', 'eachMinuteOfInterval.cjs', 'eachMinuteOfInterval.d.cts', 'eachMinuteOfInterval.d.ts', 'eachMinuteOfInterval.js', 'eachMonthOfInterval.cjs', 'eachMonthOfInterval.d.cts', 'eachMonthOfInterval.d.ts', 'eachMonthOfInterval.js', 'eachQuarterOfInterval.cjs', 'eachQuarterOfInterval.d.cts', 'eachQuarterOfInterval.d.ts', 'eachQuarterOfInterval.js', 'eachWeekOfInterval.cjs', 'eachWeekOfInterval.d.cts', 'eachWeekOfInterval.d.ts', 'eachWeekOfInterval.js', 'eachWeekendOfInterval.cjs', 'eachWeekendOfInterval.d.cts', 'eachWeekendOfInterval.d.ts', 'eachWeekendOfInterval.js', 'eachWeekendOfMonth.cjs', 'eachWeekendOfMonth.d.cts', 'eachWeekendOfMonth.d.ts', 'eachWeekendOfMonth.js', 'eachWeekendOfYear.cjs', 'eachWeekendOfYear.d.cts', 'eachWeekendOfYear.d.ts', 'eachWeekendOfYear.js', 'eachYearOfInterval.cjs', 'eachYearOfInterval.d.cts', 'eachYearOfInterval.d.ts', 'eachYearOfInterval.js', 'endOfDay.cjs', 'endOfDay.d.cts', 'endOfDay.d.ts', 'endOfDay.js', 'endOfDecade.cjs', 'endOfDecade.d.cts', 'endOfDecade.d.ts', 'endOfDecade.js', 'endOfHour.cjs', 'endOfHour.d.cts', 'endOfHour.d.ts', 'endOfHour.js', 'endOfISOWeek.cjs', 'endOfISOWeek.d.cts', 'endOfISOWeek.d.ts', 'endOfISOWeek.js', 'endOfISOWeekYear.cjs', 'endOfISOWeekYear.d.cts', 'endOfISOWeekYear.d.ts', 'endOfISOWeekYear.js', 'endOfMinute.cjs', 'endOfMinute.d.cts', 'endOfMinute.d.ts', 'endOfMinute.js', 'endOfMonth.cjs', 'endOfMonth.d.cts', 'endOfMonth.d.ts', 'endOfMonth.js', 'endOfQuarter.cjs', 'endOfQuarter.d.cts', 'endOfQuarter.d.ts', 'endOfQuarter.js', 'endOfSecond.cjs', 'endOfSecond.d.cts', 'endOfSecond.d.ts', 'endOfSecond.js', 'endOfToday.cjs', 'endOfToday.d.cts', 'endOfToday.d.ts', 'endOfToday.js', 'endOfTomorrow.cjs', 'endOfTomorrow.d.cts', 'endOfTomorrow.d.ts', 'endOfTomorrow.js', 'endOfWeek.cjs', 'endOfWeek.d.cts', 'endOfWeek.d.ts', 'endOfWeek.js', 'endOfYear.cjs', 'endOfYear.d.cts', 'endOfYear.d.ts', 'endOfYear.js', 'endOfYesterday.cjs', 'endOfYesterday.d.cts', 'endOfYesterday.d.ts', 'endOfYesterday.js', 'format.cjs', 'format.d.cts', 'format.d.ts', 'format.js', 'formatDistance.cjs', 'formatDistance.d.cts', 'formatDistance.d.ts', 'formatDistance.js', 'formatDistanceStrict.cjs', 'formatDistanceStrict.d.cts', 'formatDistanceStrict.d.ts', 'formatDistanceStrict.js', 'formatDistanceToNow.cjs', 'formatDistanceToNow.d.cts', 'formatDistanceToNow.d.ts', 'formatDistanceToNow.js', 'formatDistanceToNowStrict.cjs', 'formatDistanceToNowStrict.d.cts', 'formatDistanceToNowStrict.d.ts', 'formatDistanceToNowStrict.js', 'formatDuration.cjs', 'formatDuration.d.cts', 'formatDuration.d.ts', 'formatDuration.js', 'formatISO.cjs', 'formatISO.d.cts', 'formatISO.d.ts', 'formatISO.js', 'formatISO9075.cjs', 'formatISO9075.d.cts', 'formatISO9075.d.ts', 'formatISO9075.js', 'formatISODuration.cjs', 'formatISODuration.d.cts', 'formatISODuration.d.ts', 'formatISODuration.js', 'formatRFC3339.cjs', 'formatRFC3339.d.cts', 'formatRFC3339.d.ts', 'formatRFC3339.js', 'formatRFC7231.cjs', 'formatRFC7231.d.cts', 'formatRFC7231.d.ts', 'formatRFC7231.js', 'formatRelative.cjs', 'formatRelative.d.cts', 'formatRelative.d.ts', 'formatRelative.js', 'fp.cjs', 'fp.d.cts', 'fp.d.ts', 'fp.js', 'fromUnixTime.cjs', 'fromUnixTime.d.cts', 'fromUnixTime.d.ts', 'fromUnixTime.js', 'getDate.cjs', 'getDate.d.cts', 'getDate.d.ts', 'getDate.js', 'getDay.cjs', 'getDay.d.cts', 'getDay.d.ts', 'getDay.js', 'getDayOfYear.cjs', 'getDayOfYear.d.cts', 'getDayOfYear.d.ts', 'getDayOfYear.js', 'getDaysInMonth.cjs', 'getDaysInMonth.d.cts', 'getDaysInMonth.d.ts', 'getDaysInMonth.js', 'getDaysInYear.cjs', 'getDaysInYear.d.cts', 'getDaysInYear.d.ts', 'getDaysInYear.js', 'getDecade.cjs', 'getDecade.d.cts', 'getDecade.d.ts', 'getDecade.js', 'getDefaultOptions.cjs', 'getDefaultOptions.d.cts', 'getDefaultOptions.d.ts', 'getDefaultOptions.js', 'getHours.cjs', 'getHours.d.cts', 'getHours.d.ts', 'getHours.js', 'getISODay.cjs', 'getISODay.d.cts', 'getISODay.d.ts', 'getISODay.js', 'getISOWeek.cjs', 'getISOWeek.d.cts', 'getISOWeek.d.ts', 'getISOWeek.js', 'getISOWeekYear.cjs', 'getISOWeekYear.d.cts', 'getISOWeekYear.d.ts', 'getISOWeekYear.js', 'getISOWeeksInYear.cjs', 'getISOWeeksInYear.d.cts', 'getISOWeeksInYear.d.ts', 'getISOWeeksInYear.js', 'getMilliseconds.cjs', 'getMilliseconds.d.cts', 'getMilliseconds.d.ts', 'getMilliseconds.js', 'getMinutes.cjs', 'getMinutes.d.cts', 'getMinutes.d.ts', 'getMinutes.js', 'getMonth.cjs', 'getMonth.d.cts', 'getMonth.d.ts', 'getMonth.js', 'getOverlappingDaysInIntervals.cjs', 'getOverlappingDaysInIntervals.d.cts', 'getOverlappingDaysInIntervals.d.ts', 'getOverlappingDaysInIntervals.js', 'getQuarter.cjs', 'getQuarter.d.cts', 'getQuarter.d.ts', 'getQuarter.js', 'getSeconds.cjs', 'getSeconds.d.cts', 'getSeconds.d.ts', 'getSeconds.js', 'getTime.cjs', 'getTime.d.cts', 'getTime.d.ts', 'getTime.js', 'getUnixTime.cjs', 'getUnixTime.d.cts', 'getUnixTime.d.ts', 'getUnixTime.js', 'getWeek.cjs', 'getWeek.d.cts', 'getWeek.d.ts', 'getWeek.js', 'getWeekOfMonth.cjs', 'getWeekOfMonth.d.cts', 'getWeekOfMonth.d.ts', 'getWeekOfMonth.js', 'getWeekYear.cjs', 'getWeekYear.d.cts', 'getWeekYear.d.ts', 'getWeekYear.js', 'getWeeksInMonth.cjs', 'getWeeksInMonth.d.cts', 'getWeeksInMonth.d.ts', 'getWeeksInMonth.js', 'getYear.cjs', 'getYear.d.cts', 'getYear.d.ts', 'getYear.js', 'hoursToMilliseconds.cjs', 'hoursToMilliseconds.d.cts', 'hoursToMilliseconds.d.ts', 'hoursToMilliseconds.js', 'hoursToMinutes.cjs', 'hoursToMinutes.d.cts', 'hoursToMinutes.d.ts', 'hoursToMinutes.js', 'hoursToSeconds.cjs', 'hoursToSeconds.d.cts', 'hoursToSeconds.d.ts', 'hoursToSeconds.js', 'index.cjs', 'index.d.cts', 'index.d.ts', 'index.js', 'interval.cjs', 'interval.d.cts', 'interval.d.ts', 'interval.js', 'intervalToDuration.cjs', 'intervalToDuration.d.cts', 'intervalToDuration.d.ts', 'intervalToDuration.js', 'intlFormat.cjs', 'intlFormat.d.cts', 'intlFormat.d.ts', 'intlFormat.js', 'intlFormatDistance.cjs', 'intlFormatDistance.d.cts', 'intlFormatDistance.d.ts', 'intlFormatDistance.js', 'isAfter.cjs', 'isAfter.d.cts', 'isAfter.d.ts', 'isAfter.js', 'isBefore.cjs', 'isBefore.d.cts', 'isBefore.d.ts', 'isBefore.js', 'isDate.cjs', 'isDate.d.cts', 'isDate.d.ts', 'isDate.js', 'isEqual.cjs', 'isEqual.d.cts', 'isEqual.d.ts', 'isEqual.js', 'isExists.cjs', 'isExists.d.cts', 'isExists.d.ts', 'isExists.js', 'isFirstDayOfMonth.cjs', 'isFirstDayOfMonth.d.cts', 'isFirstDayOfMonth.d.ts', 'isFirstDayOfMonth.js', 'isFriday.cjs', 'isFriday.d.cts', 'isFriday.d.ts', 'isFriday.js', 'isFuture.cjs', 'isFuture.d.cts', 'isFuture.d.ts', 'isFuture.js', 'isLastDayOfMonth.cjs', 'isLastDayOfMonth.d.cts', 'isLastDayOfMonth.d.ts', 'isLastDayOfMonth.js', 'isLeapYear.cjs', 'isLeapYear.d.cts', 'isLeapYear.d.ts', 'isLeapYear.js', 'isMatch.cjs', 'isMatch.d.cts', 'isMatch.d.ts', 'isMatch.js', 'isMonday.cjs', 'isMonday.d.cts', 'isMonday.d.ts', 'isMonday.js', 'isPast.cjs', 'isPast.d.cts', 'isPast.d.ts', 'isPast.js', 'isSameDay.cjs', 'isSameDay.d.cts', 'isSameDay.d.ts', 'isSameDay.js', 'isSameHour.cjs', 'isSameHour.d.cts', 'isSameHour.d.ts', 'isSameHour.js', 'isSameISOWeek.cjs', 'isSameISOWeek.d.cts', 'isSameISOWeek.d.ts', 'isSameISOWeek.js', 'isSameISOWeekYear.cjs', 'isSameISOWeekYear.d.cts', 'isSameISOWeekYear.d.ts', 'isSameISOWeekYear.js', 'isSameMinute.cjs', 'isSameMinute.d.cts', 'isSameMinute.d.ts', 'isSameMinute.js', 'isSameMonth.cjs', 'isSameMonth.d.cts', 'isSameMonth.d.ts', 'isSameMonth.js', 'isSameQuarter.cjs', 'isSameQuarter.d.cts', 'isSameQuarter.d.ts', 'isSameQuarter.js', 'isSameSecond.cjs', 'isSameSecond.d.cts', 'isSameSecond.d.ts', 'isSameSecond.js', 'isSameWeek.cjs', 'isSameWeek.d.cts', 'isSameWeek.d.ts', 'isSameWeek.js', 'isSameYear.cjs', 'isSameYear.d.cts', 'isSameYear.d.ts', 'isSameYear.js', 'isSaturday.cjs', 'isSaturday.d.cts', 'isSaturday.d.ts', 'isSaturday.js', 'isSunday.cjs', 'isSunday.d.cts', 'isSunday.d.ts', 'isSunday.js', 'isThisHour.cjs', 'isThisHour.d.cts', 'isThisHour.d.ts', 'isThisHour.js', 'isThisISOWeek.cjs', 'isThisISOWeek.d.cts', 'isThisISOWeek.d.ts', 'isThisISOWeek.js', 'isThisMinute.cjs', 'isThisMinute.d.cts', 'isThisMinute.d.ts', 'isThisMinute.js', 'isThisMonth.cjs', 'isThisMonth.d.cts', 'isThisMonth.d.ts', 'isThisMonth.js', 'isThisQuarter.cjs', 'isThisQuarter.d.cts', 'isThisQuarter.d.ts', 'isThisQuarter.js', 'isThisSecond.cjs', 'isThisSecond.d.cts', 'isThisSecond.d.ts', 'isThisSecond.js', 'isThisWeek.cjs', 'isThisWeek.d.cts', 'isThisWeek.d.ts', 'isThisWeek.js', 'isThisYear.cjs', 'isThisYear.d.cts', 'isThisYear.d.ts', 'isThisYear.js', 'isThursday.cjs', 'isThursday.d.cts', 'isThursday.d.ts', 'isThursday.js', 'isToday.cjs', 'isToday.d.cts', 'isToday.d.ts', 'isToday.js', 'isTomorrow.cjs', 'isTomorrow.d.cts', 'isTomorrow.d.ts', 'isTomorrow.js', 'isTuesday.cjs', 'isTuesday.d.cts', 'isTuesday.d.ts', 'isTuesday.js', 'isValid.cjs', 'isValid.d.cts', 'isValid.d.ts', 'isValid.js', 'isWednesday.cjs', 'isWednesday.d.cts', 'isWednesday.d.ts', 'isWednesday.js', 'isWeekend.cjs', 'isWeekend.d.cts', 'isWeekend.d.ts', 'isWeekend.js', 'isWithinInterval.cjs', 'isWithinInterval.d.cts', 'isWithinInterval.d.ts', 'isWithinInterval.js', 'isYesterday.cjs', 'isYesterday.d.cts', 'isYesterday.d.ts', 'isYesterday.js', 'lastDayOfDecade.cjs', 'lastDayOfDecade.d.cts', 'lastDayOfDecade.d.ts', 'lastDayOfDecade.js', 'lastDayOfISOWeek.cjs', 'lastDayOfISOWeek.d.cts', 'lastDayOfISOWeek.d.ts', 'lastDayOfISOWeek.js', 'lastDayOfISOWeekYear.cjs', 'lastDayOfISOWeekYear.d.cts', 'lastDayOfISOWeekYear.d.ts', 'lastDayOfISOWeekYear.js', 'lastDayOfMonth.cjs', 'lastDayOfMonth.d.cts', 'lastDayOfMonth.d.ts', 'lastDayOfMonth.js', 'lastDayOfQuarter.cjs', 'lastDayOfQuarter.d.cts', 'lastDayOfQuarter.d.ts', 'lastDayOfQuarter.js', 'lastDayOfWeek.cjs', 'lastDayOfWeek.d.cts', 'lastDayOfWeek.d.ts', 'lastDayOfWeek.js', 'lastDayOfYear.cjs', 'lastDayOfYear.d.cts', 'lastDayOfYear.d.ts', 'lastDayOfYear.js', 'lightFormat.cjs', 'lightFormat.d.cts', 'lightFormat.d.ts', 'lightFormat.js', 'locale.cjs', 'locale.d.cts', 'locale.d.ts', 'locale.js', 'max.cjs', 'max.d.cts', 'max.d.ts', 'max.js', 'milliseconds.cjs', 'milliseconds.d.cts', 'milliseconds.d.ts', 'milliseconds.js', 'millisecondsToHours.cjs', 'millisecondsToHours.d.cts', 'millisecondsToHours.d.ts', 'millisecondsToHours.js', 'millisecondsToMinutes.cjs', 'millisecondsToMinutes.d.cts', 'millisecondsToMinutes.d.ts', 'millisecondsToMinutes.js', 'millisecondsToSeconds.cjs', 'millisecondsToSeconds.d.cts', 'millisecondsToSeconds.d.ts', 'millisecondsToSeconds.js', 'min.cjs', 'min.d.cts', 'min.d.ts', 'min.js', 'minutesToHours.cjs', 'minutesToHours.d.cts', 'minutesToHours.d.ts', 'minutesToHours.js', 'minutesToMilliseconds.cjs', 'minutesToMilliseconds.d.cts', 'minutesToMilliseconds.d.ts', 'minutesToMilliseconds.js', 'minutesToSeconds.cjs', 'minutesToSeconds.d.cts', 'minutesToSeconds.d.ts', 'minutesToSeconds.js', 'monthsToQuarters.cjs', 'monthsToQuarters.d.cts', 'monthsToQuarters.d.ts', 'monthsToQuarters.js', 'monthsToYears.cjs', 'monthsToYears.d.cts', 'monthsToYears.d.ts', 'monthsToYears.js', 'nextDay.cjs', 'nextDay.d.cts', 'nextDay.d.ts', 'nextDay.js', 'nextFriday.cjs', 'nextFriday.d.cts', 'nextFriday.d.ts', 'nextFriday.js', 'nextMonday.cjs', 'nextMonday.d.cts', 'nextMonday.d.ts', 'nextMonday.js', 'nextSaturday.cjs', 'nextSaturday.d.cts', 'nextSaturday.d.ts', 'nextSaturday.js', 'nextSunday.cjs', 'nextSunday.d.cts', 'nextSunday.d.ts', 'nextSunday.js', 'nextThursday.cjs', 'nextThursday.d.cts', 'nextThursday.d.ts', 'nextThursday.js', 'nextTuesday.cjs', 'nextTuesday.d.cts', 'nextTuesday.d.ts', 'nextTuesday.js', 'nextWednesday.cjs', 'nextWednesday.d.cts', 'nextWednesday.d.ts', 'nextWednesday.js', 'package.json', 'parse.cjs', 'parse.d.cts', 'parse.d.ts', 'parse.js', 'parseISO.cjs', 'parseISO.d.cts', 'parseISO.d.ts', 'parseISO.js', 'parseJSON.cjs', 'parseJSON.d.cts', 'parseJSON.d.ts', 'parseJSON.js', 'previousDay.cjs', 'previousDay.d.cts', 'previousDay.d.ts', 'previousDay.js', 'previousFriday.cjs', 'previousFriday.d.cts', 'previousFriday.d.ts', 'previousFriday.js', 'previousMonday.cjs', 'previousMonday.d.cts', 'previousMonday.d.ts', 'previousMonday.js', 'previousSaturday.cjs', 'previousSaturday.d.cts', 'previousSaturday.d.ts', 'previousSaturday.js', 'previousSunday.cjs', 'previousSunday.d.cts', 'previousSunday.d.ts', 'previousSunday.js', 'previousThursday.cjs', 'previousThursday.d.cts', 'previousThursday.d.ts', 'previousThursday.js', 'previousTuesday.cjs', 'previousTuesday.d.cts', 'previousTuesday.d.ts', 'previousTuesday.js', 'previousWednesday.cjs', 'previousWednesday.d.cts', 'previousWednesday.d.ts', 'previousWednesday.js', 'quartersToMonths.cjs', 'quartersToMonths.d.cts', 'quartersToMonths.d.ts', 'quartersToMonths.js', 'quartersToYears.cjs', 'quartersToYears.d.cts', 'quartersToYears.d.ts', 'quartersToYears.js', 'roundToNearestHours.cjs', 'roundToNearestHours.d.cts', 'roundToNearestHours.d.ts', 'roundToNearestHours.js', 'roundToNearestMinutes.cjs', 'roundToNearestMinutes.d.cts', 'roundToNearestMinutes.d.ts', 'roundToNearestMinutes.js', 'secondsToHours.cjs', 'secondsToHours.d.cts', 'secondsToHours.d.ts', 'secondsToHours.js', 'secondsToMilliseconds.cjs', 'secondsToMilliseconds.d.cts', 'secondsToMilliseconds.d.ts', 'secondsToMilliseconds.js', 'secondsToMinutes.cjs', 'secondsToMinutes.d.cts', 'secondsToMinutes.d.ts', 'secondsToMinutes.js', 'set.cjs', 'set.d.cts', 'set.d.ts', 'set.js', 'setDate.cjs', 'setDate.d.cts', 'setDate.d.ts', 'setDate.js', 'setDay.cjs', 'setDay.d.cts', 'setDay.d.ts', 'setDay.js', 'setDayOfYear.cjs', 'setDayOfYear.d.cts', 'setDayOfYear.d.ts', 'setDayOfYear.js', 'setDefaultOptions.cjs', 'setDefaultOptions.d.cts', 'setDefaultOptions.d.ts', 'setDefaultOptions.js', 'setHours.cjs', 'setHours.d.cts', 'setHours.d.ts', 'setHours.js', 'setISODay.cjs', 'setISODay.d.cts', 'setISODay.d.ts', 'setISODay.js', 'setISOWeek.cjs', 'setISOWeek.d.cts', 'setISOWeek.d.ts', 'setISOWeek.js', 'setISOWeekYear.cjs', 'setISOWeekYear.d.cts', 'setISOWeekYear.d.ts', 'setISOWeekYear.js', 'setMilliseconds.cjs', 'setMilliseconds.d.cts', 'setMilliseconds.d.ts', 'setMilliseconds.js', 'setMinutes.cjs', 'setMinutes.d.cts', 'setMinutes.d.ts', 'setMinutes.js', 'setMonth.cjs', 'setMonth.d.cts', 'setMonth.d.ts', 'setMonth.js', 'setQuarter.cjs', 'setQuarter.d.cts', 'setQuarter.d.ts', 'setQuarter.js', 'setSeconds.cjs', 'setSeconds.d.cts', 'setSeconds.d.ts', 'setSeconds.js', 'setWeek.cjs', 'setWeek.d.cts', 'setWeek.d.ts', 'setWeek.js', 'setWeekYear.cjs', 'setWeekYear.d.cts', 'setWeekYear.d.ts', 'setWeekYear.js', 'setYear.cjs', 'setYear.d.cts', 'setYear.d.ts', 'setYear.js', 'startOfDay.cjs', 'startOfDay.d.cts', 'startOfDay.d.ts', 'startOfDay.js', 'startOfDecade.cjs', 'startOfDecade.d.cts', 'startOfDecade.d.ts', 'startOfDecade.js', 'startOfHour.cjs', 'startOfHour.d.cts', 'startOfHour.d.ts', 'startOfHour.js', 'startOfISOWeek.cjs', 'startOfISOWeek.d.cts', 'startOfISOWeek.d.ts', 'startOfISOWeek.js', 'startOfISOWeekYear.cjs', 'startOfISOWeekYear.d.cts', 'startOfISOWeekYear.d.ts', 'startOfISOWeekYear.js', 'startOfMinute.cjs', 'startOfMinute.d.cts', 'startOfMinute.d.ts', 'startOfMinute.js', 'startOfMonth.cjs', 'startOfMonth.d.cts', 'startOfMonth.d.ts', 'startOfMonth.js', 'startOfQuarter.cjs', 'startOfQuarter.d.cts', 'startOfQuarter.d.ts', 'startOfQuarter.js', 'startOfSecond.cjs', 'startOfSecond.d.cts', 'startOfSecond.d.ts', 'startOfSecond.js', 'startOfToday.cjs', 'startOfToday.d.cts', 'startOfToday.d.ts', 'startOfToday.js', 'startOfTomorrow.cjs', 'startOfTomorrow.d.cts', 'startOfTomorrow.d.ts', 'startOfTomorrow.js', 'startOfWeek.cjs', 'startOfWeek.d.cts', 'startOfWeek.d.ts', 'startOfWeek.js', 'startOfWeekYear.cjs', 'startOfWeekYear.d.cts', 'startOfWeekYear.d.ts', 'startOfWeekYear.js', 'startOfYear.cjs', 'startOfYear.d.cts', 'startOfYear.d.ts', 'startOfYear.js', 'startOfYesterday.cjs', 'startOfYesterday.d.cts', 'startOfYesterday.d.ts', 'startOfYesterday.js', 'sub.cjs', 'sub.d.cts', 'sub.d.ts', 'sub.js', 'subBusinessDays.cjs', 'subBusinessDays.d.cts', 'subBusinessDays.d.ts', 'subBusinessDays.js', 'subDays.cjs', 'subDays.d.cts', 'subDays.d.ts', 'subDays.js', 'subHours.cjs', 'subHours.d.cts', 'subHours.d.ts', 'subHours.js', 'subISOWeekYears.cjs', 'subISOWeekYears.d.cts', 'subISOWeekYears.d.ts', 'subISOWeekYears.js', 'subMilliseconds.cjs', 'subMilliseconds.d.cts', 'subMilliseconds.d.ts', 'subMilliseconds.js', 'subMinutes.cjs', 'subMinutes.d.cts', 'subMinutes.d.ts', 'subMinutes.js', 'subMonths.cjs', 'subMonths.d.cts', 'subMonths.d.ts', 'subMonths.js', 'subQuarters.cjs', 'subQuarters.d.cts', 'subQuarters.d.ts', 'subQuarters.js', 'subSeconds.cjs', 'subSeconds.d.cts', 'subSeconds.d.ts', 'subSeconds.js', 'subWeeks.cjs', 'subWeeks.d.cts', 'subWeeks.d.ts', 'subWeeks.js', 'subYears.cjs', 'subYears.d.cts', 'subYears.d.ts', 'subYears.js', 'toDate.cjs', 'toDate.d.cts', 'toDate.d.ts', 'toDate.js', 'transpose.cjs', 'transpose.d.cts', 'transpose.d.ts', 'transpose.js', 'types.cjs', 'types.d.cts', 'types.d.ts', 'types.js', 'weeksToDays.cjs', 'weeksToDays.d.cts', 'weeksToDays.d.ts', 'weeksToDays.js', 'yearsToDays.cjs', 'yearsToDays.d.cts', 'yearsToDays.d.ts', 'yearsToDays.js', 'yearsToMonths.cjs', 'yearsToMonths.d.cts', 'yearsToMonths.d.ts', 'yearsToMonths.js', 'yearsToQuarters.cjs', 'yearsToQuarters.d.cts', 'yearsToQuarters.d.ts', 'yearsToQuarters.js']
+  node_modules\debug -> dirs: ['src'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\decimal.js-light -> dirs: ['doc'] files: ['CHANGELOG.md', 'LICENCE.md', 'README.md', 'decimal.d.ts', 'decimal.js', 'decimal.min.js', 'decimal.mjs', 'package.json']
+  node_modules\deep-is -> dirs: ['example', 'test'] files: ['.travis.yml', 'LICENSE', 'README.markdown', 'index.js', 'package.json']
+  node_modules\delayed-stream -> dirs: ['lib'] files: ['.npmignore', 'License', 'Makefile', 'Readme.md', 'package.json']
+  node_modules\detect-libc -> dirs: ['lib'] files: ['LICENSE', 'README.md', 'index.d.ts', 'package.json']
+  node_modules\docx -> dirs: ['dist', 'node_modules'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\dompurify -> dirs: ['dist'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\dunder-proto -> dirs: ['.github', 'test'] files: ['.eslintrc', '.nycrc', 'CHANGELOG.md', 'LICENSE', 'README.md', 'get.d.ts', 'get.js', 'package.json', 'set.d.ts', 'set.js', 'tsconfig.json']
+  node_modules\electron-to-chromium -> dirs: [] files: ['LICENSE', 'README.md', 'chromium-versions.js', 'chromium-versions.json', 'full-chromium-versions.js', 'full-chromium-versions.json', 'full-versions.js', 'full-versions.json', 'index.js', 'package.json', 'versions.js', 'versions.json']
+  node_modules\enhanced-resolve -> dirs: ['lib'] files: ['LICENSE', 'README.md', 'package.json', 'types.d.ts']
+  node_modules\es-define-property -> dirs: ['.github', 'test'] files: ['.eslintrc', '.nycrc', 'CHANGELOG.md', 'LICENSE', 'README.md', 'index.d.ts', 'index.js', 'package.json', 'tsconfig.json']
+  node_modules\es-errors -> dirs: ['.github', 'test'] files: ['.eslintrc', 'CHANGELOG.md', 'LICENSE', 'README.md', 'eval.d.ts', 'eval.js', 'index.d.ts', 'index.js', 'package.json', 'range.d.ts', 'range.js', 'ref.d.ts', 'ref.js', 'syntax.d.ts', 'syntax.js', 'tsconfig.json', 'type.d.ts', 'type.js', 'uri.d.ts', 'uri.js']
+  node_modules\es-object-atoms -> dirs: ['.github', 'test'] files: ['.eslintrc', 'CHANGELOG.md', 'LICENSE', 'README.md', 'RequireObjectCoercible.d.ts', 'RequireObjectCoercible.js', 'ToObject.d.ts', 'ToObject.js', 'index.d.ts', 'index.js', 'isObject.d.ts', 'isObject.js', 'package.json', 'tsconfig.json']
+  node_modules\es-set-tostringtag -> dirs: ['test'] files: ['.eslintrc', '.nycrc', 'CHANGELOG.md', 'LICENSE', 'README.md', 'index.d.ts', 'index.js', 'package.json', 'tsconfig.json']
+  node_modules\es-toolkit -> dirs: ['compat', 'dist', 'src'] files: ['CHANGELOG.md', 'LICENSE', 'README.md', 'array.d.ts', 'array.js', 'compat.d.ts', 'compat.js', 'error.d.ts', 'error.js', 'function.d.ts', 'function.js', 'math.d.ts', 'math.js', 'object.d.ts', 'object.js', 'package.json', 'predicate.d.ts', 'predicate.js', 'promise.d.ts', 'promise.js', 'string.d.ts', 'string.js', 'util.d.ts', 'util.js']
+  node_modules\esbuild -> dirs: ['bin', 'lib'] files: ['LICENSE.md', 'README.md', 'install.js', 'package.json']
+  node_modules\escalade -> dirs: ['dist', 'sync'] files: ['index.d.mts', 'index.d.ts', 'license', 'package.json', 'readme.md']
+  node_modules\escape-string-regexp -> dirs: [] files: ['index.d.ts', 'index.js', 'license', 'package.json', 'readme.md']
+  node_modules\eslint -> dirs: ['bin', 'conf', 'lib', 'messages'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\eslint-plugin-react-hooks -> dirs: ['cjs'] files: ['LICENSE', 'README.md', 'index.d.ts', 'index.js', 'package.json']
+  node_modules\eslint-plugin-react-refresh -> dirs: [] files: ['LICENSE', 'README.md', 'index.d.ts', 'index.js', 'package.json']
+  node_modules\eslint-scope -> dirs: ['dist', 'lib'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\eslint-visitor-keys -> dirs: ['dist', 'lib'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\espree -> dirs: ['dist', 'lib'] files: ['LICENSE', 'README.md', 'espree.js', 'package.json']
+  node_modules\esquery -> dirs: ['dist'] files: ['README.md', 'license.txt', 'package.json', 'parser.js']
+  node_modules\esrecurse -> dirs: [] files: ['.babelrc', 'README.md', 'esrecurse.js', 'gulpfile.babel.js', 'package.json']
+  node_modules\estraverse -> dirs: [] files: ['.jshintrc', 'LICENSE.BSD', 'README.md', 'estraverse.js', 'gulpfile.js', 'package.json']
+  node_modules\esutils -> dirs: ['lib'] files: ['LICENSE.BSD', 'README.md', 'package.json']
+  node_modules\eventemitter3 -> dirs: ['dist'] files: ['LICENSE', 'README.md', 'index.d.ts', 'index.js', 'index.mjs', 'package.json']
+  node_modules\fast-deep-equal -> dirs: ['es6'] files: ['LICENSE', 'README.md', 'index.d.ts', 'index.js', 'package.json', 'react.d.ts', 'react.js']
+  node_modules\fast-glob -> dirs: ['node_modules', 'out'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\fast-json-stable-stringify -> dirs: ['.github', 'benchmark', 'example', 'test'] files: ['.eslintrc.yml', '.travis.yml', 'LICENSE', 'README.md', 'index.d.ts', 'index.js', 'package.json']
+  node_modules\fast-levenshtein -> dirs: [] files: ['LICENSE.md', 'README.md', 'levenshtein.js', 'package.json']
+  node_modules\fast-png -> dirs: ['lib', 'lib-esm', 'src'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\fastq -> dirs: ['.github', 'test'] files: ['LICENSE', 'README.md', 'SECURITY.md', 'bench.js', 'example.js', 'example.mjs', 'index.d.ts', 'package.json', 'queue.js']
+  node_modules\fflate -> dirs: ['esm', 'lib', 'umd'] files: ['CHANGELOG.md', 'LICENSE', 'README.md', 'package.json']
+  node_modules\file-entry-cache -> dirs: [] files: ['LICENSE', 'README.md', 'cache.js', 'package.json']
+  node_modules\file-saver -> dirs: ['dist', 'src'] files: ['CHANGELOG.md', 'LICENSE.md', 'README.md', 'package.json']
+  node_modules\fill-range -> dirs: [] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\find-up -> dirs: [] files: ['index.d.ts', 'index.js', 'license', 'package.json', 'readme.md']
+  node_modules\flat-cache -> dirs: ['src'] files: ['LICENSE', 'README.md', 'changelog.md', 'package.json']
+  node_modules\flatted -> dirs: ['cjs', 'esm', 'php', 'python', 'types'] files: ['LICENSE', 'README.md', 'es.js', 'esm.js', 'index.js', 'min.js', 'package.json']
+  node_modules\follow-redirects -> dirs: [] files: ['LICENSE', 'README.md', 'debug.js', 'http.js', 'https.js', 'index.js', 'package.json']
+  node_modules\form-data -> dirs: ['lib'] files: ['CHANGELOG.md', 'License', 'README.md', 'index.d.ts', 'package.json']
+  node_modules\fraction.js -> dirs: [] files: ['LICENSE', 'README.md', 'bigfraction.js', 'fraction.cjs', 'fraction.d.ts', 'fraction.js', 'fraction.min.js', 'package.json']
+  node_modules\framer-motion -> dirs: ['client', 'dist', 'dom', 'm', 'mini'] files: ['LICENSE.md', 'README.md', 'package.json']
+  node_modules\function-bind -> dirs: ['.github', 'test'] files: ['.eslintrc', '.nycrc', 'CHANGELOG.md', 'LICENSE', 'README.md', 'implementation.js', 'index.js', 'package.json']
+  node_modules\gensync -> dirs: ['test'] files: ['LICENSE', 'README.md', 'index.js', 'index.js.flow', 'package.json']
+  node_modules\get-intrinsic -> dirs: ['.github', 'test'] files: ['.eslintrc', '.nycrc', 'CHANGELOG.md', 'LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\get-proto -> dirs: ['.github', 'test'] files: ['.eslintrc', '.nycrc', 'CHANGELOG.md', 'LICENSE', 'Object.getPrototypeOf.d.ts', 'Object.getPrototypeOf.js', 'README.md', 'Reflect.getPrototypeOf.d.ts', 'Reflect.getPrototypeOf.js', 'index.d.ts', 'index.js', 'package.json', 'tsconfig.json']
+  node_modules\glob-parent -> dirs: [] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\globals -> dirs: [] files: ['globals.json', 'index.d.ts', 'index.js', 'license', 'package.json', 'readme.md']
+  node_modules\gopd -> dirs: ['.github', 'test'] files: ['.eslintrc', 'CHANGELOG.md', 'LICENSE', 'README.md', 'gOPD.d.ts', 'gOPD.js', 'index.d.ts', 'index.js', 'package.json', 'tsconfig.json']
+  node_modules\graceful-fs -> dirs: [] files: ['LICENSE', 'README.md', 'clone.js', 'graceful-fs.js', 'legacy-streams.js', 'package.json', 'polyfills.js']
+  node_modules\graphemer -> dirs: ['lib'] files: ['CHANGELOG.md', 'LICENSE', 'README.md', 'package.json']
+  node_modules\has-flag -> dirs: [] files: ['index.d.ts', 'index.js', 'license', 'package.json', 'readme.md']
+  node_modules\has-symbols -> dirs: ['.github', 'test'] files: ['.eslintrc', '.nycrc', 'CHANGELOG.md', 'LICENSE', 'README.md', 'index.d.ts', 'index.js', 'package.json', 'shams.d.ts', 'shams.js', 'tsconfig.json']
+  node_modules\has-tostringtag -> dirs: ['.github', 'test'] files: ['.eslintrc', '.nycrc', 'CHANGELOG.md', 'LICENSE', 'README.md', 'index.d.ts', 'index.js', 'package.json', 'shams.d.ts', 'shams.js', 'tsconfig.json']
+  node_modules\hash.js -> dirs: ['lib', 'test'] files: ['.eslintrc.js', '.travis.yml', 'README.md', 'package.json']
+  node_modules\hasown -> dirs: ['.github'] files: ['.eslintrc', '.nycrc', 'CHANGELOG.md', 'LICENSE', 'README.md', 'index.d.ts', 'index.js', 'package.json', 'tsconfig.json']
+  node_modules\html-parse-stringify -> dirs: ['dist'] files: ['README.md', 'package.json']
+  node_modules\html2canvas -> dirs: ['dist'] files: ['CHANGELOG.md', 'LICENSE', 'README.md', 'package.json', 'tsconfig.json']
+  node_modules\i18next -> dirs: ['dist', 'typescript'] files: ['.nvmrc', 'LICENSE', 'README.md', 'i18next.js', 'i18next.min.js', 'index.d.mts', 'index.d.ts', 'index.js', 'package.json']
+  node_modules\ignore -> dirs: [] files: ['LICENSE-MIT', 'README.md', 'index.d.ts', 'index.js', 'legacy.js', 'package.json']
+  node_modules\immediate -> dirs: ['dist', 'lib'] files: ['LICENSE.txt', 'README.md', 'package.json']
+  node_modules\immer -> dirs: ['dist', 'src'] files: ['LICENSE', 'package.json', 'readme.md']
+  node_modules\import-fresh -> dirs: [] files: ['index.d.ts', 'index.js', 'license', 'package.json', 'readme.md']
+  node_modules\imurmurhash -> dirs: [] files: ['README.md', 'imurmurhash.js', 'imurmurhash.min.js', 'package.json']
+  node_modules\inherits -> dirs: [] files: ['LICENSE', 'README.md', 'inherits.js', 'inherits_browser.js', 'package.json']
+  node_modules\internmap -> dirs: ['dist', 'src'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\iobuffer -> dirs: ['lib', 'lib-esm', 'src'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\is-extglob -> dirs: [] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\is-glob -> dirs: [] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\is-number -> dirs: [] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\isarray -> dirs: [] files: ['.npmignore', '.travis.yml', 'Makefile', 'README.md', 'component.json', 'index.js', 'package.json', 'test.js']
+  node_modules\isexe -> dirs: ['test'] files: ['.npmignore', 'LICENSE', 'README.md', 'index.js', 'mode.js', 'package.json', 'windows.js']
+  node_modules\jiti -> dirs: ['dist', 'lib'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\js-tokens -> dirs: [] files: ['CHANGELOG.md', 'LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\js-yaml -> dirs: ['bin', 'dist', 'lib'] files: ['CHANGELOG.md', 'LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\jsesc -> dirs: ['bin', 'man'] files: ['LICENSE-MIT.txt', 'README.md', 'jsesc.js', 'package.json']
+  node_modules\json-buffer -> dirs: ['test'] files: ['.travis.yml', 'LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\json-schema-traverse -> dirs: ['spec'] files: ['.eslintrc.yml', '.travis.yml', 'LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\json-stable-stringify-without-jsonify -> dirs: ['example', 'test'] files: ['.npmignore', '.travis.yml', 'LICENSE', 'index.js', 'package.json', 'readme.markdown']
+  node_modules\json5 -> dirs: ['dist', 'lib'] files: ['LICENSE.md', 'README.md', 'package.json']
+  node_modules\jspdf -> dirs: ['dist', 'types'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\jszip -> dirs: ['.github', 'dist', 'lib', 'node_modules', 'vendor'] files: ['.codeclimate.yml', '.editorconfig', '.eslintrc.js', '.jekyll-metadata', '.travis.yml', 'CHANGES.md', 'LICENSE.markdown', 'README.markdown', 'deps.js', 'graph.svg', 'index.d.ts', 'package.json', 'sponsors.md', 'tsconfig.json']
+  node_modules\keyv -> dirs: ['src'] files: ['README.md', 'package.json']
+  node_modules\levn -> dirs: ['lib'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\lie -> dirs: ['dist', 'lib'] files: ['README.md', 'license.md', 'lie.d.ts', 'package.json', 'polyfill.js']
+  node_modules\lightningcss -> dirs: ['node'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\lightningcss-win32-x64-msvc -> dirs: [] files: ['LICENSE', 'README.md', 'lightningcss.win32-x64-msvc.node', 'package.json']
+  node_modules\locate-path -> dirs: [] files: ['index.d.ts', 'index.js', 'license', 'package.json', 'readme.md']
+  node_modules\lodash.merge -> dirs: [] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\lru-cache -> dirs: [] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\lucide-react -> dirs: ['dist'] files: ['LICENSE', 'README.md', 'dynamic.d.ts', 'dynamic.mjs', 'dynamicIconImports.d.ts', 'dynamicIconImports.mjs', 'package.json']
+  node_modules\magic-string -> dirs: ['dist'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\math-intrinsics -> dirs: ['.github', 'constants', 'test'] files: ['.eslintrc', 'CHANGELOG.md', 'LICENSE', 'README.md', 'abs.d.ts', 'abs.js', 'floor.d.ts', 'floor.js', 'isFinite.d.ts', 'isFinite.js', 'isInteger.d.ts', 'isInteger.js', 'isNaN.d.ts', 'isNaN.js', 'isNegativeZero.d.ts', 'isNegativeZero.js', 'max.d.ts', 'max.js', 'min.d.ts', 'min.js', 'mod.d.ts', 'mod.js', 'package.json', 'pow.d.ts', 'pow.js', 'round.d.ts', 'round.js', 'sign.d.ts', 'sign.js', 'tsconfig.json']
+  node_modules\merge2 -> dirs: [] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\micromatch -> dirs: [] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\mime-db -> dirs: [] files: ['HISTORY.md', 'LICENSE', 'README.md', 'db.json', 'index.js', 'package.json']
+  node_modules\mime-types -> dirs: [] files: ['HISTORY.md', 'LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\minimalistic-assert -> dirs: [] files: ['LICENSE', 'index.js', 'package.json', 'readme.md']
+  node_modules\minimatch -> dirs: [] files: ['LICENSE', 'README.md', 'minimatch.js', 'package.json']
+  node_modules\motion-dom -> dirs: ['dist'] files: ['LICENSE.md', 'package.json']
+  node_modules\motion-utils -> dirs: ['dist'] files: ['LICENSE.md', 'package.json']
+  node_modules\ms -> dirs: [] files: ['index.js', 'license.md', 'package.json', 'readme.md']
+  node_modules\nanoid -> dirs: ['async', 'bin', 'non-secure', 'url-alphabet'] files: ['LICENSE', 'README.md', 'index.browser.cjs', 'index.browser.js', 'index.cjs', 'index.d.cts', 'index.d.ts', 'index.js', 'nanoid.js', 'package.json']
+  node_modules\natural-compare -> dirs: [] files: ['README.md', 'index.js', 'package.json']
+  node_modules\node-releases -> dirs: ['data'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\normalize-range -> dirs: [] files: ['index.js', 'license', 'package.json', 'readme.md']
+  node_modules\optionator -> dirs: ['lib'] files: ['CHANGELOG.md', 'LICENSE', 'README.md', 'package.json']
+  node_modules\p-limit -> dirs: [] files: ['index.d.ts', 'index.js', 'license', 'package.json', 'readme.md']
+  node_modules\p-locate -> dirs: [] files: ['index.d.ts', 'index.js', 'license', 'package.json', 'readme.md']
+  node_modules\pako -> dirs: ['dist', 'lib'] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\parent-module -> dirs: [] files: ['index.js', 'license', 'package.json', 'readme.md']
+  node_modules\path-exists -> dirs: [] files: ['index.d.ts', 'index.js', 'license', 'package.json', 'readme.md']
+  node_modules\path-key -> dirs: [] files: ['index.d.ts', 'index.js', 'license', 'package.json', 'readme.md']
+  node_modules\performance-now -> dirs: ['lib', 'src', 'test'] files: ['.npmignore', '.tm_properties', '.travis.yml', 'README.md', 'license.txt', 'package.json']
+  node_modules\picocolors -> dirs: [] files: ['LICENSE', 'README.md', 'package.json', 'picocolors.browser.js', 'picocolors.d.ts', 'picocolors.js', 'types.d.ts']
+  node_modules\picomatch -> dirs: ['lib'] files: ['CHANGELOG.md', 'LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\postcss -> dirs: ['lib'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\postcss-value-parser -> dirs: ['lib'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\prelude-ls -> dirs: ['lib'] files: ['CHANGELOG.md', 'LICENSE', 'README.md', 'package.json']
+  node_modules\process-nextick-args -> dirs: [] files: ['index.js', 'license.md', 'package.json', 'readme.md']
+  node_modules\proxy-from-env -> dirs: [] files: ['.eslintrc', '.travis.yml', 'LICENSE', 'README.md', 'index.js', 'package.json', 'test.js']
+  node_modules\punycode -> dirs: [] files: ['LICENSE-MIT.txt', 'README.md', 'package.json', 'punycode.es6.js', 'punycode.js']
+  node_modules\queue-microtask -> dirs: [] files: ['LICENSE', 'README.md', 'index.d.ts', 'index.js', 'package.json']
+  node_modules\raf -> dirs: [] files: ['LICENSE', 'README.md', 'index.js', 'package.json', 'polyfill.js', 'test.js', 'window.js']
+  node_modules\react -> dirs: ['cjs'] files: ['LICENSE', 'README.md', 'compiler-runtime.js', 'index.js', 'jsx-dev-runtime.js', 'jsx-dev-runtime.react-server.js', 'jsx-runtime.js', 'jsx-runtime.react-server.js', 'package.json', 'react.react-server.js']
+  node_modules\react-chartjs-2 -> dirs: ['dist'] files: ['LICENSE', 'LICENSE.md', 'README.md', 'package.json']
+  node_modules\react-dom -> dirs: ['cjs'] files: ['LICENSE', 'README.md', 'client.js', 'client.react-server.js', 'index.js', 'package.json', 'profiling.js', 'profiling.react-server.js', 'react-dom.react-server.js', 'server.browser.js', 'server.bun.js', 'server.edge.js', 'server.js', 'server.node.js', 'server.react-server.js', 'static.browser.js', 'static.edge.js', 'static.js', 'static.node.js', 'static.react-server.js', 'test-utils.js']
+  node_modules\react-i18next -> dirs: ['.husky', 'dist', 'src'] files: ['.eslintrc.json', '.prettierignore', 'CHANGELOG.md', 'LICENSE', 'README.md', 'TransWithoutContext.d.mts', 'TransWithoutContext.d.ts', 'helpers.d.ts', 'icu.macro.d.mts', 'icu.macro.d.ts', 'icu.macro.js', 'index.d.mts', 'index.d.ts', 'initReactI18next.d.mts', 'initReactI18next.d.ts', 'lint-staged.config.mjs', 'package.json', 'react-i18next.js', 'react-i18next.min.js', 'vitest.workspace.typescript.mts']
+  node_modules\react-is -> dirs: ['cjs'] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\react-redux -> dirs: ['dist', 'src'] files: ['LICENSE.md', 'README.md', 'package.json']
+  node_modules\react-refresh -> dirs: ['cjs'] files: ['LICENSE', 'README.md', 'babel.js', 'package.json', 'runtime.js']
+  node_modules\readable-stream -> dirs: ['doc', 'lib'] files: ['.travis.yml', 'CONTRIBUTING.md', 'GOVERNANCE.md', 'LICENSE', 'README.md', 'duplex-browser.js', 'duplex.js', 'package.json', 'passthrough.js', 'readable-browser.js', 'readable.js', 'transform.js', 'writable-browser.js', 'writable.js']
+  node_modules\recharts -> dirs: ['es6', 'lib', 'types', 'umd'] files: ['CHANGELOG.md', 'CONTRIBUTING.md', 'DEVELOPING.md', 'LICENSE', 'README.md', 'package.json']
+  node_modules\redux -> dirs: ['dist', 'src'] files: ['LICENSE.md', 'README.md', 'package.json']
+  node_modules\redux-thunk -> dirs: ['dist', 'src'] files: ['LICENSE.md', 'README.md', 'package.json']
+  node_modules\regenerator-runtime -> dirs: [] files: ['LICENSE', 'README.md', 'package.json', 'path.js', 'runtime.js']
+  node_modules\reselect -> dirs: ['dist', 'src'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\resolve-from -> dirs: [] files: ['index.js', 'license', 'package.json', 'readme.md']
+  node_modules\reusify -> dirs: ['.github', 'benchmarks'] files: ['LICENSE', 'README.md', 'SECURITY.md', 'eslint.config.js', 'package.json', 'reusify.d.ts', 'reusify.js', 'test.js', 'tsconfig.json']
+  node_modules\rgbcolor -> dirs: [] files: ['FEEL-FREE.md', 'LICENSE.md', 'README.md', 'index.js', 'package.json']
+  node_modules\rollup -> dirs: ['dist'] files: ['LICENSE.md', 'README.md', 'package.json']
+  node_modules\run-parallel -> dirs: [] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\safe-buffer -> dirs: [] files: ['LICENSE', 'README.md', 'index.d.ts', 'index.js', 'package.json']
+  node_modules\sax -> dirs: ['lib'] files: ['LICENSE.md', 'README.md', 'package.json']
+  node_modules\scheduler -> dirs: ['cjs'] files: ['LICENSE', 'README.md', 'index.js', 'index.native.js', 'package.json', 'unstable_mock.js', 'unstable_post_task.js']
+  node_modules\semver -> dirs: ['bin'] files: ['LICENSE', 'README.md', 'package.json', 'range.bnf', 'semver.js']
+  node_modules\setimmediate -> dirs: [] files: ['LICENSE.txt', 'package.json', 'setImmediate.js']
+  node_modules\shebang-command -> dirs: [] files: ['index.js', 'license', 'package.json', 'readme.md']
+  node_modules\shebang-regex -> dirs: [] files: ['index.d.ts', 'index.js', 'license', 'package.json', 'readme.md']
+  node_modules\source-map-js -> dirs: ['lib'] files: ['LICENSE', 'README.md', 'package.json', 'source-map.d.ts', 'source-map.js']
+  node_modules\stackblur-canvas -> dirs: ['dist', 'src'] files: ['.editorconfig', '.eslintignore', '.eslintrc.js', 'CHANGES.md', 'LICENSE-MIT.txt', 'README.md', 'index.d.ts', 'package.json']
+  node_modules\string_decoder -> dirs: ['lib'] files: ['.travis.yml', 'LICENSE', 'README.md', 'package.json']
+  node_modules\strip-json-comments -> dirs: [] files: ['index.d.ts', 'index.js', 'license', 'package.json', 'readme.md']
+  node_modules\supports-color -> dirs: [] files: ['browser.js', 'index.js', 'license', 'package.json', 'readme.md']
+  node_modules\svg-pathdata -> dirs: ['lib', 'src'] files: ['CHANGELOG.md', 'LICENSE', 'README.md', 'index.d.ts', 'karma.conf.js', 'package.json', 'tsconfig.json', 'tslint.json']
+  node_modules\tailwindcss -> dirs: ['dist'] files: ['LICENSE', 'README.md', 'index.css', 'package.json', 'preflight.css', 'theme.css', 'utilities.css']
+  node_modules\tapable -> dirs: ['lib'] files: ['LICENSE', 'README.md', 'package.json', 'tapable.d.ts']
+  node_modules\text-segmentation -> dirs: ['dist'] files: ['CHANGELOG.md', 'LICENSE', 'README.md', 'package.json', 'rollup.config.ts']
+  node_modules\tiny-invariant -> dirs: ['dist', 'src'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\tinyglobby -> dirs: ['dist', 'node_modules'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\to-regex-range -> dirs: [] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\ts-api-utils -> dirs: ['lib'] files: ['LICENSE.md', 'README.md', 'package.json']
+  node_modules\tslib -> dirs: ['modules'] files: ['CopyrightNotice.txt', 'LICENSE.txt', 'README.md', 'SECURITY.md', 'package.json', 'tslib.d.ts', 'tslib.es6.html', 'tslib.es6.js', 'tslib.es6.mjs', 'tslib.html', 'tslib.js']
+  node_modules\type-check -> dirs: ['lib'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\typescript -> dirs: ['bin', 'lib'] files: ['LICENSE.txt', 'README.md', 'SECURITY.md', 'ThirdPartyNoticeText.txt', 'package.json']
+  node_modules\typescript-eslint -> dirs: ['dist'] files: ['LICENSE', 'README.md', 'package.json']
+  node_modules\undici-types -> dirs: [] files: ['LICENSE', 'README.md', 'agent.d.ts', 'api.d.ts', 'balanced-pool.d.ts', 'cache-interceptor.d.ts', 'cache.d.ts', 'client-stats.d.ts', 'client.d.ts', 'connector.d.ts', 'content-type.d.ts', 'cookies.d.ts', 'diagnostics-channel.d.ts', 'dispatcher.d.ts', 'env-http-proxy-agent.d.ts', 'errors.d.ts', 'eventsource.d.ts', 'fetch.d.ts', 'formdata.d.ts', 'global-dispatcher.d.ts', 'global-origin.d.ts', 'h2c-client.d.ts', 'handlers.d.ts', 'header.d.ts', 'index.d.ts', 'interceptors.d.ts', 'mock-agent.d.ts', 'mock-call-history.d.ts', 'mock-client.d.ts', 'mock-errors.d.ts', 'mock-interceptor.d.ts', 'mock-pool.d.ts', 'package.json', 'patch.d.ts', 'pool-stats.d.ts', 'pool.d.ts', 'proxy-agent.d.ts', 'readable.d.ts', 'retry-agent.d.ts', 'retry-handler.d.ts', 'snapshot-agent.d.ts', 'util.d.ts', 'utility.d.ts', 'webidl.d.ts', 'websocket.d.ts']
+  node_modules\update-browserslist-db -> dirs: [] files: ['LICENSE', 'README.md', 'check-npm-version.js', 'cli.js', 'index.d.ts', 'index.js', 'package.json', 'utils.js']
+  node_modules\uri-js -> dirs: ['dist'] files: ['LICENSE', 'README.md', 'package.json', 'yarn.lock']
+  node_modules\use-sync-external-store -> dirs: ['cjs', 'shim'] files: ['LICENSE', 'README.md', 'index.js', 'package.json', 'with-selector.js']
+  node_modules\util-deprecate -> dirs: [] files: ['History.md', 'LICENSE', 'README.md', 'browser.js', 'node.js', 'package.json']
+  node_modules\utrie -> dirs: ['dist'] files: ['CHANGELOG.md', 'LICENSE', 'package.json', 'rollup.config.ts']
+  node_modules\victory-vendor -> dirs: ['es', 'lib', 'lib-vendor'] files: ['CHANGELOG.md', 'README.md', 'd3-array.d.ts', 'd3-array.js', 'd3-ease.d.ts', 'd3-ease.js', 'd3-interpolate.d.ts', 'd3-interpolate.js', 'd3-scale.d.ts', 'd3-scale.js', 'd3-shape.d.ts', 'd3-shape.js', 'd3-time.d.ts', 'd3-time.js', 'd3-timer.d.ts', 'd3-timer.js', 'package.json']
+  node_modules\vite -> dirs: ['bin', 'dist', 'misc', 'node_modules', 'types'] files: ['LICENSE.md', 'README.md', 'client.d.ts', 'package.json']
+  node_modules\void-elements -> dirs: [] files: ['LICENSE', 'README.md', 'index.js', 'package.json']
+  node_modules\which -> dirs: ['bin'] files: ['CHANGELOG.md', 'LICENSE', 'README.md', 'package.json', 'which.js']
+  node_modules\word-wrap -> dirs: [] files: ['LICENSE', 'README.md', 'index.d.ts', 'index.js', 'package.json']
+  node_modules\xml -> dirs: ['examples', 'lib', 'test'] files: ['.npmignore', '.travis.yml', 'LICENSE', 'package.json', 'readme.md']
+  node_modules\xml-js -> dirs: ['bin', 'dist', 'lib', 'types'] files: ['LICENSE', 'README.md', 'index.js', 'package.json', 'webpack.config.js']
+  node_modules\yallist -> dirs: [] files: ['LICENSE', 'README.md', 'iterator.js', 'package.json', 'yallist.js']
+  node_modules\yocto-queue -> dirs: [] files: ['index.d.ts', 'index.js', 'license', 'package.json', 'readme.md']
+  public -> dirs: ['sample_data'] files: ['vite.svg']
+  public\sample_data -> dirs: [] files: ['alerts.csv', 'kpi_summary.json', 'orgs.csv', 'parameters.json', 'timeseries_kpi.csv', 'uploads.csv', 'users.csv', 'validators.csv']
+  src -> dirs: ['assets', 'components', 'pages', 'services'] files: ['App.css', 'App.css.bak', 'App.tsx', 'App.tsx.bak', 'index.css', 'index.css.bak', 'main.tsx', 'main.tsx.bak', 'mock-data.ts', 'theme.ts']
+  src\assets -> dirs: [] files: ['react.svg']
+  src\components -> dirs: [] files: ['ActiveUserWidget.tsx', 'AlertsPanel.tsx', 'App.css', 'App.css.bak', 'App.tsx', 'App.tsx.bak', 'ChartCard.tsx', 'Dockerfile.frontend', 'Header.tsx', 'KpiCard.tsx', 'MetricCard.tsx', 'NavBar.tsx', 'Sidebar.tsx', 'ThemeToggle.tsx', 'index.css', 'index.css.bak', 'main.tsx', 'main.tsx.bak']
+  src\pages -> dirs: [] files: ['Alerts.tsx', 'Dashboard.tsx', 'Login.tsx', 'Reports.tsx', 'Upload.tsx']
+  src\services -> dirs: [] files: ['api.ts']
+  src.bak -> dirs: ['assets', 'components', 'pages', 'services'] files: ['App.css', 'App.css.bak', 'App.tsx', 'App.tsx.bak', 'index.css', 'index.css.bak', 'main.tsx', 'main.tsx.bak', 'mock-data.ts', 'theme.ts']
+  src.bak\assets -> dirs: [] files: ['react.svg']
+  src.bak\components -> dirs: [] files: ['ActiveUserWidget.tsx', 'AlertsPanel.tsx', 'App.css', 'App.css.bak', 'App.tsx', 'App.tsx.bak', 'ChartCard.tsx', 'Dockerfile.frontend', 'Header.tsx', 'KpiCard.tsx', 'MetricCard.tsx', 'NavBar.tsx', 'Sidebar.tsx', 'ThemeToggle.tsx', 'index.css', 'index.css.bak', 'main.tsx', 'main.tsx.bak']
+  src.bak\pages -> dirs: [] files: ['Alerts.tsx', 'Dashboard.tsx', 'Login.tsx', 'Reports.tsx', 'Upload.tsx']
+  src.bak\services -> dirs: [] files: ['api.ts']
+
+frontend/Dockerfile content preview:
+# frontend/Dockerfile
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy dependency files first for faster caching
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of your source code
+COPY . .
+
+# Expose Vite port
+EXPOSE 5173
+
+# Start dev server on all interfaces (for Docker)
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
+
+Parsed Dockerfile info:
+{
+  "workdir": "/app",
+  "copies": [
+    "COPY package*.json ./",
+    "COPY . ."
+  ],
+  "exposes": [
+    "5173"
+  ],
+  "cmd": "CMD [\"npm\", \"run\", \"dev\", \"--\", \"--host\", \"0.0.0.0\"]"
+}
+
+frontend/package.json exists: YES
+  name: wqam-dashboard
+  scripts keys: dev, build, lint, preview
+frontend/index.html exists: True
+frontend/src exists: True
+
+.dockerignore at repo root exists: False
+frontend/.dockerignore exists: False
+
+docker-compose.yml exists: True
+--- Extracted frontend service block from docker-compose.yml ---
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    env_file:
+      - ./frontend/.env
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules   # prevent overwriting installed node_modules
+
+
+Helpful automated checks:
+ - Does docker-compose frontend define a host bind mount like './frontend:/app'?
+ - Does docker-compose accidentally mount a named volume to /app (e.g. 'some_volume:/app') which hides host files?
+
+Manual next-step commands to run (paste into your shell):
+
+# check mounts for the running frontend container:
+docker ps --format "table {{.Names}}	{{.Image}}	{{.Status}}" | findstr /I frontend
+
+# inspect mounts (use the container name shown; e.g. wqam-dashboard-frontend)
+docker inspect --format '{{json .Mounts}}' wqam-dashboard-frontend
+
+# list volumes:
+docker volume ls
+
+# inspect the named volume that might be present:
+docker volume inspect wqam-dashboard_frontend_node_modules
+
+# enter the container and show content and mount points:
+docker compose exec frontend sh -c "ls -la /app && mount | sed -n '1,200p'"
+
+# check from host (Windows) if bind mount path exists and files visible:
+dir .\frontend

@@ -1,0 +1,6 @@
+alert_id,type,message,created_at,severity
+AL1,System,Database connection issue,2025-11-01T11:00:00,High
+AL2,Threshold,Temperature exceeded 80°C,2025-10-28T10:30:00,Medium
+AL3,Validation,Missing sensor calibration data,2025-10-22T08:15:00,Low
+AL4,Error,Upload failure for U4,2025-10-18T19:00:00,High
+AL5,System,Redis latency alert,2025-10-17T15:45:00,Medium

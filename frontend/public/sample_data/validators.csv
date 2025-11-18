@@ -1,0 +1,7 @@
+validator_id,org_id,status
+V1,O1,Online
+V2,O1,Offline
+V3,O2,Busy
+V4,O3,Online
+V5,O4,Online
+V6,O4,Offline

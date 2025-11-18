@@ -1,0 +1,26 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme */
+:root { --accent: #7c3aed; --accent-2: #06b6d4; }
+html,body,#root { height:100%; font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; }
+body {
+  background: linear-gradient(180deg, rgba(248,250,252,1) 0%, rgba(241,245,249,1) 40%, rgba(236,246,255,1) 100%);
+  margin:0;
+  color: #0f172a;
+}
+html.dark body { background: radial-gradient(1000px 400px at 10% 10%, rgba(24,22,29,0.7) 0%, #08070b 70%); color: #e6e6f0; }
+
+.glass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(8px) saturate(120%);
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(124,58,237,0.06);
+}
+
+.container-app { max-width:1300px; margin:1.25rem auto; padding:1.25rem; }
+.kpi-title { font-size:0.85rem; color:rgba(60,60,70,0.85); }
+.kpi-value { font-size:1.7rem; font-weight:700; color:#0f172a; }
+.kpi-trend { font-size:0.85rem; color:#059669; }

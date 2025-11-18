@@ -1,8 +1,13 @@
 fastapi
 uvicorn[standard]
-pandas
+sqlmodel
+pydantic
+psycopg2-binary
 python-multipart
-numpy
-aiofiles
+pandas
+python-jose[cryptography]
+passlib[bcrypt]
+redis
+rq
+boto3
 python-dotenv
-openpyxl
