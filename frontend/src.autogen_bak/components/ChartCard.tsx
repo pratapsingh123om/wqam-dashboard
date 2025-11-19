@@ -1,4 +1,3 @@
-﻿import React from "react";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
 export default function ChartCard({title,data}:any){

@@ -1,4 +1,3 @@
-﻿import React from "react";
 export default function Login({onLogin}: any){
   return (
     <div className="flex items-center justify-center h-96">

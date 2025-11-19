@@ -1,17 +1,21 @@
-import React from "react";
+// frontend/src/layout/Sidebar.tsx
 
-function IconHome(){ return <svg width='18' height='18' strokeWidth='1.5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path d='M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10.5z'/></svg>; }
-function IconUpload(){ return <svg width='18' height='18' strokeWidth='1.5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/><path d='M7 10l5-5 5 5'/><path d='M12 5v12'/></svg>; }
-function IconBell(){ return <svg width='18' height='18' strokeWidth='1.5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path d='M15 17h5l-1.405-1.405A2.032 2.032 0 0 1 18 14V11a6 6 0 0 0-5-5.917V4a1 1 0 0 0-2 0v1.083A6 6 0 0 0 6 11v3c0 .538-.214 1.055-.595 1.595L4 17h11z'/><path d='M13.73 21a2 2 0 0 1-3.46 0'/></svg>; }
-function IconFile(){ return <svg width='18' height='18' strokeWidth='1.5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><path d='M14 2v6h6'/></svg>; }
+interface SidebarProps {
+  route: string;
+  onNavigate: (path: string) => void;
+  role?: string | null;
+  onLogout: () => void;
+}
 
-export default function Sidebar({ route, onNavigate }) {
-  const links = [
-    { name: "Dashboard", path: "/", icon: IconHome },
-    { name: "Uploads", path: "/uploads", icon: IconUpload },
-    { name: "Alerts", path: "/alerts", icon: IconBell },
-    { name: "Reports", path: "/reports", icon: IconFile },
-  ];
+const links = [
+  { name: "Dashboard", path: "/", roles: ["user", "validator", "admin"] },
+  { name: "Uploads", path: "/uploads", roles: ["user", "admin"] },
+  { name: "Alerts", path: "/alerts", roles: ["admin", "validator", "user"] },
+  { name: "Reports", path: "/reports", roles: ["admin", "validator", "user"] },
+  { name: "Mobile view", path: "/mobile", roles: ["admin", "validator", "user"] },
+];
+
+export default function Sidebar({ route, onNavigate, role, onLogout }: SidebarProps) {
 
   return (
     <aside className="w-64 p-6 glass flex flex-col gap-6">
@@ -20,22 +24,26 @@ export default function Sidebar({ route, onNavigate }) {
         <div className="text-xs text-gray-300">Water Quality Analytics</div>
       </div>
 
-      <nav className="space-y-2">
-        {links.map((l) => {
-          const Icon = l.icon;
+      <nav className="space-y-2 flex-1">
+        {links.filter(l => l.roles.includes(role || "user")).map((l) => {
           const active = route === l.path;
-
           return (
             <button
               key={l.path}
               onClick={() => onNavigate(l.path)}
-              className={\w-full flex items-center gap-3 px-4 py-3 rounded-xl transition \\}
+              className={`w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl transition ${active ? "bg-white/20" : "hover:bg-white/10"}`}
             >
-              <Icon /> {l.name}
+              {l.name}
             </button>
           );
         })}
       </nav>
+
+      <div>
+        <div className="text-xs text-gray-400">Role</div>
+        <div className="text-sm font-semibold mt-1">{(role || "guest").toUpperCase()}</div>
+        <button onClick={onLogout} className="mt-3 w-full py-2 rounded-md bg-red-600 hover:bg-red-700">Logout</button>
+      </div>
     </aside>
   );
 }

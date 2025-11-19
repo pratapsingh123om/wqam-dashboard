@@ -1,6 +1,5 @@
 import ActiveUsersWidget from './components/ActiveUsersWidget';
 import AlertsPanel from './components/AlertsPanel';
-import React, { useState, useRef } from "react";
 import api from './services/api';
 import { Line } from 'react-chartjs-2';
 import {
