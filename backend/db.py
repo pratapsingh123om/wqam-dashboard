@@ -1,15 +1,17 @@
-# db.py - DB setup using SQLModel
-from sqlmodel import SQLModel, create_engine, Session
+# backend/app/database.py
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-engine = create_engine(DATABASE_URL, echo=False)
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./wqam.db")
 
-def init_db():
-    from models import User, Organization, Upload, Parameter, Threshold, Alert, ActivityLog, ValidatorReview, Presence
-    SQLModel.metadata.create_all(engine)
+connect_args = {}
+if DATABASE_URL.startswith("sqlite"):
+    connect_args = {"check_same_thread": False}
 
-def get_session():
-    return Session(engine)
+engine = create_engine(DATABASE_URL, connect_args=connect_args)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()

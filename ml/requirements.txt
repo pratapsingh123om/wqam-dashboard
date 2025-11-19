@@ -1,0 +1,9 @@
+pdfplumber
+pandas
+numpy
+matplotlib
+scikit-learn
+joblib
+openpyxl    # optional if you later use xlsx
+tabula-py   # optional - PDFs: needs Java; fallback uses text parsing
+tqdm
