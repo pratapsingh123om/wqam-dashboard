@@ -8,6 +8,7 @@ import Alerts from "./pages/Alerts";
 import Reports from "./pages/Reports";
 import MobilePreview from "./components/MobilePreview";
 import MobilePage from "./pages/Mobile";
+import MobileView from "./pages/MobileView";
 import Login from "./pages/Login";
 import { fetchDemo, fetchReports, setAuthToken, uploadWaterData } from "./services/api";
 import { login as loginRequest } from "./services/auth";
@@ -117,6 +118,11 @@ export default function App() {
       case "/reports":
         return <Reports reports={reports} loading={reportsLoading} onRefresh={loadReports} />;
       case "/mobile":
+        // Check if on mobile device or small screen
+        const isMobile = window.innerWidth < 768;
+        if (isMobile) {
+          return <MobileView reports={reports} onRefresh={loadReports} />;
+        }
         return (
           <MobilePage
             data={dashboardData}
@@ -184,9 +190,28 @@ export default function App() {
                 </p>
               </div>
               <MobilePreview
-                status={dashboardData?.mobile.status}
-                timeline={dashboardData?.mobile.timeline}
-                analysis={dashboardData?.mobile.analysis}
+                status={reports[0] ? {
+                  nickname: "Water Quality Monitor",
+                  owner: reports[0].uploaded_by || dashboardData?.mobile.status?.owner || "Operator",
+                  waterTemp: reports[0].parameters.find(p => p.parameter.toLowerCase().includes('temp'))?.average || dashboardData?.mobile.status?.waterTemp || 25,
+                  airTemp: dashboardData?.mobile.status?.airTemp || 18,
+                  automation: dashboardData?.mobile.status?.automation || true,
+                } : dashboardData?.mobile.status}
+                timeline={reports[0] ? {
+                  day: new Date(reports[0].created_at).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' }),
+                  filtrationHours: dashboardData?.mobile.timeline?.filtrationHours || 17,
+                  cleaningMinutes: dashboardData?.mobile.timeline?.cleaningMinutes || 0,
+                  disinfectionHours: dashboardData?.mobile.timeline?.disinfectionHours || 12,
+                } : dashboardData?.mobile.timeline}
+                analysis={reports[0] ? reports[0].parameters.slice(0, 4).map((param, idx) => {
+                  const tones: Array<"rose" | "amber" | "emerald" | "sky" | "violet"> = ["rose", "amber", "emerald", "sky", "violet"];
+                  return {
+                    label: param.parameter,
+                    value: param.average,
+                    unit: param.unit,
+                    tone: tones[idx % tones.length] as "rose" | "amber" | "emerald" | "sky" | "violet",
+                  };
+                }) : dashboardData?.mobile.analysis}
               />
             </div>
           </aside>

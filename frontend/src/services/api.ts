@@ -1,4 +1,4 @@
-import type { DashboardData, UploadReport } from "../types/dashboard";
+import type { DashboardData, UploadReport, MLInsights } from "../types/dashboard";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
@@ -49,6 +49,51 @@ export async function uploadWaterData(formData: FormData): Promise<UploadReport>
 
 export async function fetchReports(): Promise<UploadReport[]> {
   return apiFetch<UploadReport[]>("/api/reports");
+}
+
+export async function getMLPredictions(formData: FormData): Promise<MLInsights> {
+  return apiFetch<MLInsights>("/api/ml/predict", {
+    method: "POST",
+    body: formData,
+  });
+}
+
+export async function getMLStatus(): Promise<{ model_available: boolean; model_path: string | null }> {
+  return apiFetch<{ model_available: boolean; model_path: string | null }>("/api/ml/status");
+}
+
+export async function downloadReportPdf(reportId: string): Promise<Blob> {
+  const headers = new Headers();
+  if (authToken) {
+    headers.set("Authorization", `Bearer ${authToken}`);
+  }
+  
+  const res = await fetch(`${API_BASE}/api/reports/${reportId}/pdf`, {
+    headers,
+  });
+  
+  if (!res.ok) {
+    throw new Error(`Failed to download PDF: ${res.status}`);
+  }
+  
+  return res.blob();
+}
+
+export async function downloadLatestReportPdf(): Promise<Blob> {
+  const headers = new Headers();
+  if (authToken) {
+    headers.set("Authorization", `Bearer ${authToken}`);
+  }
+  
+  const res = await fetch(`${API_BASE}/api/reports/latest/pdf`, {
+    headers,
+  });
+  
+  if (!res.ok) {
+    throw new Error(`Failed to download PDF: ${res.status}`);
+  }
+  
+  return res.blob();
 }
 
 export default apiFetch;

@@ -96,6 +96,14 @@ export interface ParameterSeries {
   points: ParameterPoint[];
 }
 
+export interface MLInsights {
+  pollution_prediction?: number | null;
+  pollution_score?: number | null;
+  pollution_label?: string | null;
+  forecasts?: Record<string, number[]>;
+  model_available: boolean;
+}
+
 export interface UploadReport {
   id: string;
   uploaded_by: string;
@@ -105,5 +113,6 @@ export interface UploadReport {
   timeseries: ParameterSeries[];
   alerts: DashboardAlert[];
   recommendations: string[];
+  ml_insights?: MLInsights | null;
 }
 

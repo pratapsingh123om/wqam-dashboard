@@ -113,6 +113,14 @@ class ParameterSummary(BaseModel):
     directive: str | None = None
 
 
+class MLInsights(BaseModel):
+    pollution_prediction: float | None = None
+    pollution_score: float | None = None
+    pollution_label: str | None = None
+    forecasts: dict[str, list[float]] = {}
+    model_available: bool = False
+
+
 class UploadReport(BaseModel):
     id: str
     uploaded_by: str
@@ -122,3 +130,4 @@ class UploadReport(BaseModel):
     timeseries: list[ParameterSeries]
     alerts: list[Alert]
     recommendations: list[str]
+    ml_insights: MLInsights | None = None
