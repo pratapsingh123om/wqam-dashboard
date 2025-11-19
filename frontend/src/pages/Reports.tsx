@@ -34,6 +34,7 @@ export default function Reports({ reports, loading, onRefresh }: ReportsProps) {
                 <th className="px-4 py-3 text-left">Report</th>
                 <th className="px-4 py-3 text-left">Uploaded By</th>
                 <th className="px-4 py-3 text-left">Alerts</th>
+                <th className="px-4 py-3 text-left">ML Status</th>
                 <th className="px-4 py-3 text-left">Recommendations</th>
                 <th className="px-4 py-3 text-left">Generated</th>
               </tr>
@@ -55,11 +56,30 @@ export default function Reports({ reports, loading, onRefresh }: ReportsProps) {
                       <span className="text-amber-300">{report.alerts.length} open</span>
                     )}
                   </td>
+                  <td className="px-4 py-3">
+                    {report.ml_insights?.model_available ? (
+                      <div className="flex flex-col gap-1">
+                        <span className="rounded-full border border-violet-500/40 bg-violet-500/20 px-2 py-0.5 text-xs font-semibold text-violet-200">
+                          ML Enabled
+                        </span>
+                        {report.ml_insights.pollution_label && (
+                          <span className="text-xs text-slate-400">
+                            {report.ml_insights.pollution_label}
+                          </span>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="text-xs text-slate-500">No ML data</span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 text-slate-300">
                     <ul className="list-disc space-y-1 pl-4 text-xs">
-                      {report.recommendations.map((rec) => (
+                      {report.recommendations.slice(0, 2).map((rec) => (
                         <li key={rec}>{rec}</li>
                       ))}
+                      {report.recommendations.length > 2 && (
+                        <li className="text-slate-500">+{report.recommendations.length - 2} more</li>
+                      )}
                     </ul>
                   </td>
                   <td className="px-4 py-3 text-slate-400">

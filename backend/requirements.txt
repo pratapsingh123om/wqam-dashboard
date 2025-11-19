@@ -13,3 +13,7 @@ rq
 boto3
 python-dotenv
 pdfplumber
+scikit-learn
+joblib
+numpy
+matplotlib

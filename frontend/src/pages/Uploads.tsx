@@ -9,6 +9,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import type { UploadReport, ParameterSummary } from "../types/dashboard";
+import { downloadLatestReportPdf } from "../services/api";
 
 interface UploadsProps {
   onUpload: (file: File) => Promise<UploadReport>;
@@ -25,7 +26,28 @@ const statusTone: Record<string, string> = {
 export default function Uploads({ onUpload, uploading, reports }: UploadsProps) {
   const [error, setError] = useState<string | null>(null);
   const [previewName, setPreviewName] = useState<string | null>(null);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
   const latestReport = useMemo(() => reports[0] ?? null, [reports]);
+  
+  async function handleDownloadPdf() {
+    if (!latestReport) return;
+    setDownloadingPdf(true);
+    try {
+      const blob = await downloadLatestReportPdf();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `water_quality_report_${latestReport.id.slice(0, 8)}_${new Date().toISOString().split('T')[0]}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to download PDF");
+    } finally {
+      setDownloadingPdf(false);
+    }
+  }
 
   async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -122,9 +144,18 @@ export default function Uploads({ onUpload, uploading, reports }: UploadsProps) 
                   <p className="text-sm uppercase tracking-wide text-slate-400">Trend plots</p>
                   <h3 className="text-xl font-semibold text-white">Realtime reconstruction</h3>
                 </div>
-                <p className="text-xs text-slate-400">
-                  Generated {new Date(latestReport.created_at).toLocaleString()}
-                </p>
+                <div className="flex items-center gap-3">
+                  <p className="text-xs text-slate-400">
+                    Generated {new Date(latestReport.created_at).toLocaleString()}
+                  </p>
+                  <button
+                    onClick={handleDownloadPdf}
+                    disabled={downloadingPdf}
+                    className="rounded-full border border-emerald-500/40 bg-emerald-500/20 px-4 py-2 text-sm font-medium text-emerald-200 transition hover:border-emerald-500/60 hover:bg-emerald-500/30 disabled:opacity-50"
+                  >
+                    {downloadingPdf ? "Generating..." : "Download PDF Report"}
+                  </button>
+                </div>
               </div>
               <div className="grid gap-6 lg:grid-cols-2">
                 {latestReport.timeseries.map((series) => (
@@ -153,6 +184,75 @@ export default function Uploads({ onUpload, uploading, reports }: UploadsProps) 
                 ))}
               </div>
             </div>
+
+          {latestReport.ml_insights && latestReport.ml_insights.model_available && (
+            <div className="rounded-3xl border border-violet-500/30 bg-violet-500/10 p-6">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm uppercase tracking-wide text-violet-300">AI-Powered Analysis</p>
+                  <h3 className="text-xl font-semibold text-white">ML Predictions & Forecasts</h3>
+                </div>
+                <span className="rounded-full border border-violet-500/40 bg-violet-500/20 px-3 py-1 text-xs font-semibold text-violet-200">
+                  ML Enabled
+                </span>
+              </div>
+              
+              <div className="mt-6 grid gap-4 md:grid-cols-3">
+                {latestReport.ml_insights.pollution_prediction !== null && latestReport.ml_insights.pollution_prediction !== undefined && (
+                  <div className="rounded-2xl border border-violet-500/30 bg-slate-900/60 px-4 py-4">
+                    <p className="text-xs uppercase tracking-wide text-violet-300">Predicted Pollution</p>
+                    <p className="mt-2 text-3xl font-semibold text-white">
+                      {latestReport.ml_insights.pollution_prediction.toFixed(2)}
+                    </p>
+                    <p className="mt-1 text-xs text-slate-400">ML Model Prediction</p>
+                  </div>
+                )}
+                
+                {latestReport.ml_insights.pollution_score !== null && latestReport.ml_insights.pollution_score !== undefined && (
+                  <div className="rounded-2xl border border-violet-500/30 bg-slate-900/60 px-4 py-4">
+                    <p className="text-xs uppercase tracking-wide text-violet-300">Pollution Score</p>
+                    <p className="mt-2 text-3xl font-semibold text-white">
+                      {latestReport.ml_insights.pollution_score.toFixed(1)}
+                    </p>
+                    <p className="mt-1 text-xs text-slate-400">
+                      Status: {latestReport.ml_insights.pollution_label ?? "N/A"}
+                    </p>
+                  </div>
+                )}
+                
+                {latestReport.ml_insights.forecasts && Object.keys(latestReport.ml_insights.forecasts).length > 0 && (
+                  <div className="rounded-2xl border border-violet-500/30 bg-slate-900/60 px-4 py-4">
+                    <p className="text-xs uppercase tracking-wide text-violet-300">Forecasts Available</p>
+                    <p className="mt-2 text-3xl font-semibold text-white">
+                      {Object.keys(latestReport.ml_insights.forecasts).length}
+                    </p>
+                    <p className="mt-1 text-xs text-slate-400">Parameters with forecasts</p>
+                  </div>
+                )}
+              </div>
+
+              {latestReport.ml_insights.forecasts && Object.keys(latestReport.ml_insights.forecasts).length > 0 && (
+                <div className="mt-6 space-y-4">
+                  <p className="text-sm font-semibold text-white">Parameter Forecasts (Next 3 Steps)</p>
+                  <div className="grid gap-3 md:grid-cols-2">
+                    {Object.entries(latestReport.ml_insights.forecasts).map(([param, values]) => (
+                      <div key={param} className="rounded-xl border border-violet-500/20 bg-slate-900/40 px-4 py-3">
+                        <p className="text-sm font-semibold text-violet-200">{param.toUpperCase()}</p>
+                        <div className="mt-2 flex gap-2">
+                          {values.map((val, idx) => (
+                            <div key={idx} className="flex-1 rounded-lg border border-violet-500/30 bg-violet-500/10 px-2 py-1 text-center">
+                              <p className="text-xs text-violet-300">Step {idx + 1}</p>
+                              <p className="text-sm font-semibold text-white">{val.toFixed(2)}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="rounded-3xl border border-white/5 bg-white/5 p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">

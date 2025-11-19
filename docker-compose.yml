@@ -11,6 +11,11 @@ services:
       - minio
     ports:
       - "8000:8000"
+    volumes:
+      - ./ml:/ml:ro  # Mount ML directory as read-only
+      - ./backend:/app
+    environment:
+      - ML_MODEL_PATH=/ml/model/water_model.pkl
 
   frontend:
     build:
