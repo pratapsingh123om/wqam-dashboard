@@ -1,13 +1,14 @@
 import { useMemo } from "react";
 import ChartCard from "../components/ChartCard";
 import MapView from "../components/MapView";
-import type { DashboardData } from "../types/dashboard";
+import type { DashboardData, UploadReport, DashboardSite } from "../types/dashboard";
 
 interface DashboardProps {
   data: DashboardData | null;
   loading: boolean;
   error?: string | null;
   onRefresh: () => Promise<void> | void;
+  reports?: UploadReport[];
 }
 
 const severityStyles: Record<string, string> = {
@@ -16,10 +17,34 @@ const severityStyles: Record<string, string> = {
   critical: "border-rose-500/50 bg-rose-500/10 text-rose-100",
 };
 
-export default function Dashboard({ data, error, onRefresh }: DashboardProps) {
+export default function Dashboard({ data, error, onRefresh, reports = [] }: DashboardProps) {
+  // ALL HOOKS MUST BE CALLED BEFORE ANY CONDITIONAL RETURNS
   const currentTime = useMemo(() => {
     return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }, []);
+
+  // Provide safe defaults for arrays - calculate these before any returns
+  const timeseries = data?.timeseries || [];
+  const alerts = data?.alerts || [];
+  const sites = data?.sites || [];
+
+  // Combine demo sites with report locations - must be called unconditionally
+  const mapSites = useMemo(() => {
+    const reportSites: DashboardSite[] = (reports || [])
+      .filter(r => r.location?.latitude && r.location?.longitude)
+      .map((r, idx) => ({
+        id: r.id,
+        name: r.location?.location || r.location?.state || r.source_filename || `Site ${idx + 1}`,
+        latitude: r.location!.latitude!,
+        longitude: r.location!.longitude!,
+        county: r.location?.state || "Unknown",
+        status: (r.map_status || "good") as "good" | "warning" | "poor",
+      }));
+    
+    // Combine with demo data sites, avoiding duplicates
+    const allSites = [...sites, ...reportSites];
+    return allSites;
+  }, [reports, sites]);
 
   const emptyState = (
     <div className="rounded-2xl border border-dashed border-white/10 p-10 text-center text-slate-400">
@@ -33,13 +58,20 @@ export default function Dashboard({ data, error, onRefresh }: DashboardProps) {
     </div>
   );
 
+  // NOW we can do conditional returns after all hooks are called
   if (!data) {
     return emptyState;
   }
 
-  const waterTemp = data.kpis.temp;
-  const airTemp = data.mobile?.status?.airTemp || 18;
-  const automation = data.mobile?.status?.automation || true;
+  // Safely access nested properties with fallbacks
+  const waterTemp = data?.kpis?.temp ?? 25;
+  const airTemp = data?.mobile?.status?.airTemp ?? 18;
+  const automation = data?.mobile?.status?.automation ?? true;
+  
+  // Ensure required properties exist
+  if (!data.kpis || !data.operations) {
+    return emptyState;
+  }
 
   return (
     <div className="space-y-6">
@@ -123,7 +155,13 @@ export default function Dashboard({ data, error, onRefresh }: DashboardProps) {
 
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
-          <ChartCard title="Water quality variance" data={data.timeseries} />
+          {timeseries && timeseries.length > 0 ? (
+            <ChartCard title="Water quality variance" data={timeseries} />
+          ) : (
+            <div className="rounded-2xl border border-white/5 bg-white/5 p-6 text-center text-slate-400">
+              <p>No timeseries data available</p>
+            </div>
+          )}
 
           {/* Operations Cards - Pool Care Style */}
           <div className="rounded-2xl border border-white/5 bg-white/5 p-5">
@@ -160,16 +198,16 @@ export default function Dashboard({ data, error, onRefresh }: DashboardProps) {
         <div className="space-y-6">
           <div className="rounded-2xl border border-white/5 bg-white/5 p-4">
             <p className="mb-3 text-sm font-semibold text-white">Network map</p>
-            <MapView sites={data.sites} />
+            <MapView sites={mapSites} />
           </div>
 
           <div className="rounded-2xl border border-white/5 bg-white/5 p-4">
             <div className="mb-3 flex items-center justify-between">
               <p className="text-sm font-semibold text-white">Live alerts</p>
-              <span className="text-xs text-slate-400">{data.alerts.length} open</span>
+              <span className="text-xs text-slate-400">{alerts.length} open</span>
             </div>
             <div className="space-y-3">
-              {data.alerts.map((alert) => (
+              {alerts.length > 0 ? alerts.map((alert) => (
                 <div
                   key={alert.id}
                   className={`rounded-xl border px-4 py-3 text-sm ${severityStyles[alert.severity]}`}
@@ -180,7 +218,11 @@ export default function Dashboard({ data, error, onRefresh }: DashboardProps) {
                     {new Date(alert.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </p>
                 </div>
-              ))}
+              )) : (
+                <div className="text-center text-slate-400 text-sm py-4">
+                  No alerts
+                </div>
+              )}
             </div>
           </div>
         </div>

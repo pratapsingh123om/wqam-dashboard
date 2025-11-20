@@ -34,9 +34,13 @@ from auth import (
 )
 from ml_service import get_ml_insights, predict_pollution, forecast_trend
 from pathlib import Path
+from sklearn.linear_model import LinearRegression
 
 ML_DIR = Path(__file__).resolve().parent.parent / "ml"
 MODEL_PATH = ML_DIR / "model" / "water_model.pkl"
+
+# Color palette for reports (from generate_report.py)
+REPORT_PALETTE = ["#2b83ba", "#abdda4", "#fdae61", "#d7191c", "#984ea3", "#4daf4a"]
 
 # create tables
 Base.metadata.create_all(bind=engine)
@@ -216,6 +220,78 @@ def _extract_text_from_pdf(contents: bytes) -> str:
     return "\n".join(text_parts)
 
 
+def _extract_location_from_text(text: str) -> dict:
+    """Extract location information from PDF text."""
+    location_info = {
+        "state": None,
+        "location": None,
+        "latitude": None,
+        "longitude": None,
+    }
+    
+    # Common Indian states
+    indian_states = [
+        "andhra pradesh", "arunachal pradesh", "assam", "bihar", "chhattisgarh",
+        "goa", "gujarat", "haryana", "himachal pradesh", "jharkhand", "karnataka",
+        "kerala", "madhya pradesh", "maharashtra", "manipur", "meghalaya", "mizoram",
+        "nagaland", "odisha", "punjab", "rajasthan", "sikkim", "tamil nadu",
+        "telangana", "tripura", "uttar pradesh", "uttarakhand", "west bengal"
+    ]
+    
+    text_lower = text.lower()
+    
+    # Try to find state
+    for state in indian_states:
+        if state in text_lower:
+            location_info["state"] = state.title()
+            break
+    
+    # Try to find location names (common patterns)
+    location_patterns = [
+        r"(?:location|site|station|monitoring point)[\s:]+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
+        r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\s+(?:drain|canal|river|lake|pond|stp|wtp)",
+    ]
+    
+    for pattern in location_patterns:
+        matches = re.findall(pattern, text, re.IGNORECASE)
+        if matches:
+            location_info["location"] = matches[0] if isinstance(matches[0], str) else matches[0][0]
+            break
+    
+    # Try to find coordinates (lat/long)
+    coord_patterns = [
+        r"(\d+\.\d+)[°\s]*[NS]?[\s,]+(\d+\.\d+)[°\s]*[EW]?",
+        r"lat[itude]*[\s:]+(\d+\.\d+)[\s,]+long[itude]*[\s:]+(\d+\.\d+)",
+    ]
+    
+    for pattern in coord_patterns:
+        matches = re.findall(pattern, text, re.IGNORECASE)
+        if matches:
+            if isinstance(matches[0], tuple) and len(matches[0]) >= 2:
+                try:
+                    location_info["latitude"] = float(matches[0][0])
+                    location_info["longitude"] = float(matches[0][1])
+                    break
+                except (ValueError, IndexError):
+                    continue
+    
+    # If no coordinates found but we have state, use approximate center
+    if location_info["state"] and not location_info["latitude"]:
+        # Approximate coordinates for Indian states (simplified)
+        state_coords = {
+            "Maharashtra": (19.7515, 75.7139),
+            "Gujarat": (23.0225, 72.5714),
+            "Karnataka": (15.3173, 75.7139),
+            "Tamil Nadu": (11.1271, 78.6569),
+            "Uttar Pradesh": (26.8467, 80.9462),
+            "West Bengal": (22.9868, 87.8550),
+        }
+        if location_info["state"] in state_coords:
+            location_info["latitude"], location_info["longitude"] = state_coords[location_info["state"]]
+    
+    return location_info
+
+
 def _parse_parameters_from_text(text: str) -> dict:
     """Extract water quality parameters from text using regex (fallback method)."""
     def find_nums(patterns):
@@ -312,6 +388,8 @@ def _dataframe_from_pdf(contents: bytes) -> pd.DataFrame:
         
         if body:
             df = pd.DataFrame(body, columns=cleaned_header)
+            # Map columns to parameters BEFORE coercion (while we still have meaningful names)
+            df = _map_columns_to_parameters(df)
             # Coerce to numeric
             df = _coerce_to_numeric(df)
             # Remove empty columns and rows
@@ -322,8 +400,11 @@ def _dataframe_from_pdf(contents: bytes) -> pd.DataFrame:
     # Combine all dataframes
     if dfs:
         combined_df = pd.concat(dfs, ignore_index=True, sort=False)
+        # Map columns again after combining (in case some were missed)
+        combined_df = _map_columns_to_parameters(combined_df)
         # Final numeric coercion
         combined_df = _coerce_to_numeric(combined_df)
+        print(f"[DEBUG] Combined DataFrame after mapping: {list(combined_df.columns)}")
         return combined_df
     
     # Fallback: extract from text if no tables found
@@ -343,6 +424,48 @@ def _dataframe_from_pdf(contents: bytes) -> pd.DataFrame:
     raise HTTPException(status_code=400, detail="Could not extract tabular data from PDF")
 
 
+def _normalize_colname(c: str) -> str:
+    """Normalize column name for matching."""
+    return re.sub(r'[^0-9a-zA-Z]+', '_', str(c)).strip().lower()
+
+def _map_columns_to_parameters(df: pd.DataFrame) -> pd.DataFrame:
+    """Map generic column names to parameter names using ML-style heuristics."""
+    df = df.copy()
+    mapping = {}
+    
+    # Parameter keywords (from ML code)
+    param_keywords = {
+        'bod': ['bod', 'biochemical', 'b.o.d', 'b o d'],
+        'cod': ['cod', 'chemical'],
+        'do': ['dissolved oxygen', 'd.o.', ' do ', 'do '],
+        'ph': ['ph', 'ph '],
+        'tds': ['tds', 'total dissolved'],
+        'turbidity': ['turbidity', 'ntu'],
+        'chlorine': ['chlorine', 'freechlorine', 'cl2', 'free chlorine'],
+        'temp': ['temp', 'temperature'],
+    }
+    
+    for col in df.columns:
+        col_str = str(col).strip()
+        col_lower = col_str.lower()
+        col_normalized = _normalize_colname(col_str)
+        
+        # Try to match to a parameter
+        for param, keywords in param_keywords.items():
+            for keyword in keywords:
+                if keyword in col_lower or keyword in col_normalized:
+                    mapping[col] = param
+                    print(f"[DEBUG] Mapped column '{col}' -> parameter '{param}'")
+                    break
+            if col in mapping:
+                break
+    
+    if mapping:
+        df = df.rename(columns=mapping)
+        print(f"[DEBUG] Mapped {len(mapping)} columns to parameters")
+    
+    return df
+
 def _prepare_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
     # Clean column names: remove newlines, normalize whitespace
@@ -359,13 +482,24 @@ def _prepare_dataframe(df: pd.DataFrame) -> pd.DataFrame:
         cleaned_columns.append(col_str)
     df.columns = cleaned_columns
     df = df.dropna(how="all")
+    
+    # Map columns to parameters BEFORE returning
+    df = _map_columns_to_parameters(df)
+    
     return df
 
 
-def _build_report_payload(df: pd.DataFrame, username: str, filename: str | None) -> dict:
+def _build_report_payload(df: pd.DataFrame, username: str, filename: str | None, pdf_text: str | None = None) -> dict:
     df = _prepare_dataframe(df)
     if df.empty:
         raise HTTPException(status_code=400, detail="Dataset is empty after cleaning.")
+    
+    print(f"[DEBUG] After column mapping, DataFrame has columns: {list(df.columns)}")
+
+    # Extract location from PDF text if available
+    location_info = {}
+    if pdf_text:
+        location_info = _extract_location_from_text(pdf_text)
 
     time_column = next((col for col in df.columns if str(col).strip().lower() in TIME_COLUMN_CANDIDATES), None)
     if time_column:
@@ -445,6 +579,7 @@ def _build_report_payload(df: pd.DataFrame, username: str, filename: str | None)
             }
         )
         parameter_series.append({"parameter": config["label"], "points": series_points})
+        print(f"[DEBUG] Added timeseries for {config['label']} with {len(series_points)} points")
 
     if not parameter_summaries:
         raise HTTPException(status_code=400, detail="No recognized water-quality parameters in file.")
@@ -461,6 +596,13 @@ def _build_report_payload(df: pd.DataFrame, username: str, filename: str | None)
             if ml_rec not in recommendations:
                 recommendations.append(ml_rec)
 
+    # Determine map status based on alerts
+    map_status = "good"
+    if any(a["severity"] == "critical" for a in alerts):
+        map_status = "poor"
+    elif any(a["severity"] == "warning" for a in alerts):
+        map_status = "warning"
+    
     return {
         "id": uuid4().hex,
         "uploaded_by": username,
@@ -470,6 +612,8 @@ def _build_report_payload(df: pd.DataFrame, username: str, filename: str | None)
         "timeseries": parameter_series,
         "alerts": alerts,
         "recommendations": recommendations,
+        "location": location_info if location_info.get("latitude") else None,
+        "map_status": map_status,
         "ml_insights": {
             "pollution_prediction": ml_insights.get("pollution_prediction"),
             "pollution_score": ml_insights.get("pollution_score"),
@@ -638,8 +782,17 @@ async def analyze_upload(
         if df.empty:
             raise HTTPException(status_code=400, detail="No data could be extracted from the file")
         
-        report = _build_report_payload(df, current_user.username, file.filename)
+        # Extract text from PDF for location extraction
+        pdf_text = None
+        if file.filename and file.filename.lower().endswith('.pdf'):
+            pdf_text = _extract_text_from_pdf(contents)
+        
+        report = _build_report_payload(df, current_user.username, file.filename, pdf_text)
         REPORT_HISTORY.appendleft(report)
+        print(f"[DEBUG] Report created with ID: {report['id']}")
+        print(f"[DEBUG] Report has {len(report.get('timeseries', []))} timeseries entries")
+        print(f"[DEBUG] Report has {len(report.get('parameters', []))} parameters")
+        print(f"[DEBUG] REPORT_HISTORY now has {len(REPORT_HISTORY)} reports")
         return report
     except HTTPException:
         raise
@@ -691,104 +844,275 @@ def ml_status(current_user: models.User = Depends(get_current_user)):
     }
 
 
+def _simple_forecast(series: pd.Series, steps: int = 3) -> np.ndarray | None:
+    """Linear forecast using sklearn LinearRegression on index -> value (from generate_report.py)."""
+    s = series.dropna().reset_index(drop=True)
+    if s.size < 3:
+        return None
+    X = np.arange(len(s)).reshape(-1, 1)
+    y = s.values.reshape(-1, 1)
+    model = LinearRegression().fit(X, y)
+    xf = np.arange(len(s), len(s) + steps).reshape(-1, 1)
+    yf = model.predict(xf).ravel()
+    return yf
+
+def _map_parameter_label_to_key(label: str) -> str:
+    """Map parameter label (e.g., 'Dissolved Oxygen') to key (e.g., 'do')."""
+    label_lower = label.lower()
+    mapping = {
+        'ph': 'ph',
+        'dissolved oxygen': 'do',
+        'bod': 'bod',
+        'b.o.d': 'bod',
+        'biochemical oxygen demand': 'bod',
+        'cod': 'cod',
+        'chemical oxygen demand': 'cod',
+        'tds': 'tds',
+        'total dissolved solids': 'tds',
+        'turbidity': 'turbidity',
+        'free chlorine': 'chlorine',
+        'chlorine': 'chlorine',
+        'temperature': 'temp',
+        'temp': 'temp',
+    }
+    for key, value in mapping.items():
+        if key in label_lower:
+            return value
+    # Fallback: try to extract from label
+    if 'dissolved' in label_lower and 'oxygen' in label_lower:
+        return 'do'
+    if 'bod' in label_lower or 'biochemical' in label_lower:
+        return 'bod'
+    if 'cod' in label_lower or 'chemical' in label_lower:
+        return 'cod'
+    if 'ph' in label_lower:
+        return 'ph'
+    if 'tds' in label_lower or 'total dissolved' in label_lower:
+        return 'tds'
+    return label_lower.replace(' ', '_')[:10]  # Fallback
+
 def _generate_pdf_report(report: dict, df: pd.DataFrame) -> io.BytesIO:
-    """Generate a PDF report with visualizations from the analysis report."""
+    """Generate a comprehensive PDF report using generate_report.py style (enhanced version)."""
     buffer = io.BytesIO()
-    colors = ["#2b83ba", "#abdda4", "#fdae61", "#d7191c", "#984ea3", "#4daf4a"]
+    colors = REPORT_PALETTE
+    
+    # Build parameter data from timeseries (primary source) and DataFrame (fallback)
+    param_data = {}  # key -> list of values
+    param_info = {}  # key -> {label, unit, stats}
+    
+    # Extract from timeseries (most reliable)
+    for series in report.get('timeseries', []):
+        param_label = series.get('parameter', '')
+        param_key = _map_parameter_label_to_key(param_label)
+        values = [p.get('value', 0) for p in series.get('points', []) if p.get('value') is not None]
+        if values:
+            param_data[param_key] = values
+            param_info[param_key] = {
+                'label': param_label,
+                'unit': next((p.get('unit', '') for p in report.get('parameters', []) if p.get('parameter') == param_label), ''),
+            }
+    
+    # Fallback: extract from DataFrame columns
+    for col in df.columns:
+        col_str = str(col).lower()
+        param_key = _map_parameter_label_to_key(col_str)
+        if param_key not in param_data:
+            series = pd.to_numeric(df[col], errors='coerce').dropna()
+            if series.size > 0:
+                param_data[param_key] = series.tolist()
+                param_info[param_key] = {'label': str(col), 'unit': ''}
+    
+    # Also get from parameter summaries for metadata
+    for param_summary in report.get('parameters', []):
+        param_label = param_summary.get('parameter', '')
+        param_key = _map_parameter_label_to_key(param_label)
+        if param_key not in param_info:
+            param_info[param_key] = {
+                'label': param_label,
+                'unit': param_summary.get('unit', ''),
+            }
+        elif not param_info[param_key].get('unit'):
+            param_info[param_key]['unit'] = param_summary.get('unit', '')
+    
+    print(f"[DEBUG] PDF generation: Found {len(param_data)} parameters with data: {list(param_data.keys())}")
     
     with PdfPages(buffer) as pdf:
-        # Title page
+        # Title page (NWMP style from generate_report.py)
         fig, ax = plt.subplots(figsize=(8.27, 11.69))
         ax.axis('off')
-        ax.text(0.5, 0.92, "Water Quality Analysis Report", ha='center', fontsize=20, weight='bold')
-        ax.text(0.5, 0.88, f"Source: {report.get('source_filename', 'Unknown')}", ha='center', fontsize=12)
-        ax.text(0.5, 0.85, f"Generated: {datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}", ha='center', fontsize=10)
-        ax.text(0.5, 0.80, f"Analyzed by: {report.get('uploaded_by', 'Unknown')}", ha='center', fontsize=10)
+        ax.text(0.5, 0.92, "NWMP — Auto-generated Visual Report", ha='center', fontsize=20, weight='bold')
+        ax.text(0.5, 0.88, f"Source: {report.get('source_filename', 'Unknown')}", ha='center', fontsize=10)
+        ax.text(0.5, 0.85, f"Generated: {datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}", ha='center', fontsize=9)
+        ax.text(0.5, 0.82, f"Analyzed by: {report.get('uploaded_by', 'Unknown')}", ha='center', fontsize=9)
         
-        # Summary statistics
-        y = 0.70
-        ax.text(0.1, y, "Parameter Summary:", fontsize=14, weight='bold')
-        y -= 0.05
-        for param in report.get('parameters', [])[:10]:
-            status_icon = "✓" if param['status'] == 'ok' else "⚠" if param['status'] == 'warning' else "✗"
-            ax.text(0.1, y, f"{status_icon} {param['parameter']:<20} Avg: {param['average']:.2f} {param['unit']} "
-                   f"(Range: {param['minimum']:.2f} - {param['maximum']:.2f})", fontsize=10)
-            y -= 0.04
+        # Parameter summary statistics (generate_report.py style)
+        y = 0.75
+        for param_key in ['bod', 'cod', 'do', 'ph', 'tds', 'turbidity', 'chlorine', 'temp']:
+            if param_key in param_data:
+                values = param_data[param_key]
+                s = pd.Series(values)
+                s = pd.to_numeric(s, errors='coerce').dropna()
+                if s.size > 0:
+                    param_label = param_info.get(param_key, {}).get('label', param_key.upper())
+                    unit = param_info.get(param_key, {}).get('unit', '')
+                    ax.text(0.02, y, f"{param_key.upper():<12} n={s.size:<5} mean={s.mean():.2f}  median={s.median():.2f}  min={s.min():.2f}  max={s.max():.2f} {unit}", fontsize=10)
+                else:
+                    ax.text(0.02, y, f"{param_key.upper():<12} no data", fontsize=10)
+            else:
+                ax.text(0.02, y, f"{param_key.upper():<12} not found", fontsize=10)
+            y -= 0.035
         
         # ML Insights if available
         if report.get('ml_insights', {}).get('model_available'):
             y -= 0.05
-            ax.text(0.1, y, "ML Predictions:", fontsize=14, weight='bold')
-            y -= 0.04
+            ax.text(0.02, y, "ML Predictions:", fontsize=12, weight='bold')
+            y -= 0.035
             ml = report['ml_insights']
             if ml.get('pollution_score') is not None:
-                ax.text(0.1, y, f"Pollution Score: {ml['pollution_score']:.1f} ({ml.get('pollution_label', 'N/A')})", fontsize=10)
-                y -= 0.04
+                ax.text(0.02, y, f"Pollution Score: {ml['pollution_score']:.1f} ({ml.get('pollution_label', 'N/A')})", fontsize=10)
+                y -= 0.035
             if ml.get('pollution_prediction') is not None:
-                ax.text(0.1, y, f"Predicted Pollution Level: {ml['pollution_prediction']:.2f}", fontsize=10)
-                y -= 0.04
+                ax.text(0.02, y, f"Predicted Pollution Level: {ml['pollution_prediction']:.2f}", fontsize=10)
+                y -= 0.035
         
         pdf.savefig(fig, bbox_inches='tight')
         plt.close(fig)
         
-        # Parameter histograms
-        for i, param in enumerate(report.get('parameters', [])):
-            param_key = param['parameter'].lower()
-            # Try to find matching column in dataframe
-            matching_col = None
-            for col in df.columns:
-                if param_key in str(col).lower() or any(kw in str(col).lower() for kw in [param_key[:3], param_key]):
-                    matching_col = col
-                    break
+        # Per-parameter histograms (generate_report.py style)
+        for i, param_key in enumerate(['bod', 'cod', 'do', 'ph', 'tds', 'turbidity', 'chlorine', 'temp']):
+            if param_key not in param_data:
+                continue
             
-            if matching_col is None:
+            values = param_data[param_key]
+            s = pd.Series(values)
+            s = pd.to_numeric(s, errors='coerce').dropna()
+            if s.size == 0:
                 continue
-                
-            series = pd.to_numeric(df[matching_col], errors='coerce').dropna()
-            if series.size < 3:
-                continue
-                
+            
+            param_label = param_info.get(param_key, {}).get('label', param_key.upper())
             fig, ax = plt.subplots(figsize=(8.27, 5.5))
-            ax.hist(series.values, bins=min(25, max(10, series.size // 5)), 
-                   color=colors[i % len(colors)], edgecolor='k', alpha=0.7)
-            ax.set_title(f"{param['parameter']} Distribution (n={series.size})", fontsize=14, weight='bold')
-            ax.set_xlabel(f"{param['parameter']} ({param['unit']})")
-            ax.set_ylabel("Frequency")
-            ax.grid(True, alpha=0.3)
-            stats_text = f"Mean: {series.mean():.2f}\nMedian: {series.median():.2f}\nMin: {series.min():.2f}\nMax: {series.max():.2f}"
-            ax.text(0.98, 0.95, stats_text, transform=ax.transAxes, ha='right', va='top',
-                   bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5), fontsize=9)
+            ax.hist(s.values, bins=min(25, max(10, s.size // 5)), color=colors[i % len(colors)], edgecolor='k', alpha=0.9)
+            ax.set_title(f"{param_label} distribution — n={s.size}", fontsize=14)
+            ax.set_xlabel(f"{param_label} ({param_info.get(param_key, {}).get('unit', '')})")
+            ax.set_ylabel("count")
+            ax.grid(True, alpha=0.25)
+            ax.text(0.98, 0.95, f"mean={s.mean():.2f}\nmedian={s.median():.2f}\nmin={s.min():.2f}\nmax={s.max():.2f}", 
+                   transform=ax.transAxes, ha='right', va='top', bbox=dict(alpha=0.1))
             pdf.savefig(fig, bbox_inches='tight')
             plt.close(fig)
         
-        # Timeseries plots
+        # Pairwise scatter plots (generate_report.py style)
+        numeric_params = [p for p in ['bod', 'cod', 'do', 'ph', 'tds', 'turbidity', 'chlorine', 'temp'] 
+                          if p in param_data and len(param_data[p]) >= 10]
+        
+        for i in range(len(numeric_params)):
+            for j in range(i+1, len(numeric_params)):
+                a = numeric_params[i]
+                b = numeric_params[j]
+                values_a = param_data[a]
+                values_b = param_data[b]
+                # Align lengths
+                min_len = min(len(values_a), len(values_b))
+                if min_len < 8:
+                    continue
+                values_a = values_a[:min_len]
+                values_b = values_b[:min_len]
+                # Create DataFrame for scatter
+                scatter_df = pd.DataFrame({a: values_a, b: values_b})
+                scatter_df = scatter_df.apply(pd.to_numeric, errors='coerce').dropna()
+                if scatter_df.shape[0] < 8:
+                    continue
+                fig, ax = plt.subplots(figsize=(8.27, 5.5))
+                ax.scatter(scatter_df[a], scatter_df[b], c=colors[(i+j) % len(colors)], alpha=0.8)
+                ax.set_xlabel(a.upper())
+                ax.set_ylabel(b.upper())
+                ax.set_title(f"{a.upper()} vs {b.upper()} (n={scatter_df.shape[0]})")
+                ax.grid(True, alpha=0.25)
+                pdf.savefig(fig, bbox_inches='tight')
+                plt.close(fig)
+        
+        # Timeseries plots with forecasts (generate_report.py style)
         for series in report.get('timeseries', []):
-            if len(series['points']) < 2:
+            if len(series['points']) < 3:
                 continue
-            fig, ax = plt.subplots(figsize=(8.27, 5.5))
+            
             points = series['points']
             timestamps = [p['timestamp'] for p in points]
             values = [p['value'] for p in points]
-            ax.plot(timestamps, values, marker='o', linewidth=2, markersize=4, color=colors[0])
-            ax.set_title(f"{series['parameter']} Over Time", fontsize=14, weight='bold')
+            
+            # Convert timestamps to datetime if needed
+            try:
+                timestamps_dt = [pd.to_datetime(ts) for ts in timestamps]
+            except:
+                timestamps_dt = list(range(len(timestamps)))
+            
+            fig, ax = plt.subplots(figsize=(8.27, 5.5))
+            ax.plot(timestamps_dt, values, marker='o', linewidth=2, label='observed')
+            ax.set_title(f"Timeseries: {series['parameter']}", fontsize=14)
             ax.set_xlabel("Time")
-            ax.set_ylabel(f"{series['parameter']}")
-            ax.grid(True, alpha=0.3)
+            ax.set_ylabel(series['parameter'])
+            ax.grid(True, alpha=0.25)
+            
+            # Add forecast if enough data
+            if len(values) >= 3:
+                try:
+                    s = pd.Series(values)
+                    yf = _simple_forecast(s, steps=3)
+                    if yf is not None:
+                        forecast_times = list(range(len(values), len(values) + len(yf)))
+                        ax.plot(forecast_times, yf, linestyle='--', marker='x', label='forecast', color='red')
+                        ax.legend()
+                except:
+                    pass
+            
             plt.xticks(rotation=45, ha='right')
             pdf.savefig(fig, bbox_inches='tight')
             plt.close(fig)
         
-        # Recommendations page
-        fig, ax = plt.subplots(figsize=(8.27, 11.69))
-        ax.axis('off')
-        ax.text(0.5, 0.95, "Recommendations & Treatment Guidance", ha='center', fontsize=18, weight='bold')
-        y = 0.85
+        # Conclusions & prioritized actions (generate_report.py style)
+        summary_text = []
+        if 'bod' in param_data:
+            bod_values = param_data['bod']
+            bod_series = pd.Series(bod_values)
+            bod_series = pd.to_numeric(bod_series, errors='coerce').dropna()
+            if bod_series.size > 0 and bod_series.mean() > 3:
+                summary_text.append("Elevated BOD (organic load) — prioritize biological treatment upgrades and aeration.")
+        
+        if 'do' in param_data:
+            do_values = param_data['do']
+            do_series = pd.Series(do_values)
+            do_series = pd.to_numeric(do_series, errors='coerce').dropna()
+            if do_series.size > 0 and do_series.mean() < 5:
+                summary_text.append("Low DO — increase aeration and reduce upstream organic discharges.")
+        
+        if 'cod' in param_data:
+            cod_values = param_data['cod']
+            cod_series = pd.Series(cod_values)
+            cod_series = pd.to_numeric(cod_series, errors='coerce').dropna()
+            if cod_series.size > 0 and cod_series.mean() > 50:
+                summary_text.append("High COD — investigate industrial effluents; consider AOP for hard-to-destroy organics.")
+        
+        # Add recommendations from report
         for rec in report.get('recommendations', []):
-            wrapped = '\n'.join([rec[i:i+80] for i in range(0, len(rec), 80)])
-            ax.text(0.1, y, f"• {wrapped}", fontsize=10, va='top')
-            y -= len(wrapped.split('\n')) * 0.03 + 0.02
-            if y < 0.1:
-                break
+            if rec not in summary_text:
+                summary_text.append(rec)
+        
+        if not summary_text:
+            summary_text.append("No immediate red flags detected by automated heuristics; inspect raw tables or provide Excel/CSV for best results.")
+        
+        fig, ax = plt.subplots(figsize=(8.27, 5.5))
+        ax.axis('off')
+        ax.text(0.02, 0.92, "Conclusions & Prioritized Actions", fontsize=16, weight='bold')
+        for i, line in enumerate(summary_text):
+            ax.text(0.02, 0.85 - i*0.07, f"- {line}", fontsize=11)
+        ax.text(0.02, 0.35, "Next steps:", fontsize=12, weight='bold')
+        nexts = [
+            "1) Provide native Excel/CSV exports if possible (best data quality).",
+            "2) Upload all year PDFs for trend analysis & forecasting.",
+            "3) For identified hotspots, run grab sample chemical analysis and upstream sampling."
+        ]
+        for i, n in enumerate(nexts):
+            ax.text(0.02, 0.30 - i*0.05, n, fontsize=10)
         pdf.savefig(fig, bbox_inches='tight')
         plt.close(fig)
     
@@ -839,6 +1163,80 @@ async def download_latest_report_pdf(
     current_user: models.User = Depends(get_current_user),
 ):
     """Generate and download a PDF report for the latest analysis."""
-    if not REPORT_HISTORY:
+    print(f"[DEBUG] PDF request - REPORT_HISTORY length: {len(REPORT_HISTORY)}")
+    print(f"[DEBUG] REPORT_HISTORY contents: {[r.get('id', 'no-id') for r in list(REPORT_HISTORY)]}")
+    
+    if not REPORT_HISTORY or len(REPORT_HISTORY) == 0:
+        print("[ERROR] REPORT_HISTORY is empty")
         raise HTTPException(status_code=404, detail="No reports available")
-    return await download_report_pdf(REPORT_HISTORY[0]['id'], current_user)
+    
+    report = REPORT_HISTORY[0]
+    if not report:
+        print("[ERROR] First report in HISTORY is None")
+        raise HTTPException(status_code=404, detail="No reports available")
+    
+    print(f"[DEBUG] Generating PDF for report ID: {report.get('id', 'unknown')}")
+    print(f"[DEBUG] Report has {len(report.get('timeseries', []))} timeseries")
+    print(f"[DEBUG] Report timeseries: {[s.get('parameter', 'unknown') for s in report.get('timeseries', [])]}")
+    
+    # Reconstruct dataframe from report - use parameters if timeseries is empty
+    df_data = {}
+    
+    # First try timeseries
+    for series in report.get('timeseries', []):
+        param = series.get('parameter', 'unknown')
+        if param not in df_data:
+            df_data[param] = []
+        for point in series.get('points', []):
+            val = point.get('value', 0)
+            if val is not None and not (isinstance(val, float) and np.isnan(val)):
+                df_data[param].append(val)
+    
+    # Fallback: use parameter summaries if timeseries is empty
+    if not df_data:
+        print("[DEBUG] No timeseries data, using parameter summaries")
+        for param_summary in report.get('parameters', []):
+            param_name = param_summary.get('parameter', '').lower()
+            # Map common parameter names
+            param_map = {
+                'ph': 'ph',
+                'dissolved oxygen': 'do',
+                'bod': 'bod',
+                'cod': 'cod',
+                'tds': 'tds',
+                'turbidity': 'turbidity',
+                'free chlorine': 'chlorine',
+            }
+            mapped_param = param_map.get(param_name, param_name)
+            if mapped_param not in df_data:
+                # Create synthetic data from average
+                avg = param_summary.get('average', 0)
+                df_data[mapped_param] = [avg] * 10  # Create 10 data points
+    
+    # Pad to same length
+    if df_data:
+        max_len = max([len(v) for v in df_data.values()] + [1])
+        for key in df_data:
+            while len(df_data[key]) < max_len:
+                df_data[key].append(df_data[key][-1] if df_data[key] else 0)  # Repeat last value instead of NaN
+        df = pd.DataFrame(df_data)
+        print(f"[DEBUG] Reconstructed DataFrame with shape: {df.shape}, columns: {list(df.columns)}")
+    else:
+        # Create minimal dataframe if no data
+        print("[WARN] No data available for PDF generation, creating empty DataFrame")
+        df = pd.DataFrame({'ph': [7.0], 'do': [6.0]})  # Dummy data
+    
+    try:
+        pdf_buffer = _generate_pdf_report(report, df)
+        filename = f"water_quality_report_{report.get('id', 'unknown')[:8]}_{datetime.utcnow().strftime('%Y%m%d')}.pdf"
+        print(f"[DEBUG] PDF generated successfully")
+        return StreamingResponse(
+            pdf_buffer,
+            media_type="application/pdf",
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'}
+        )
+    except Exception as e:
+        print(f"[ERROR] Failed to generate PDF: {e}", exc_info=True)
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Failed to generate PDF: {str(e)}")

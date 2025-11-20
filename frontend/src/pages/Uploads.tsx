@@ -27,22 +27,50 @@ export default function Uploads({ onUpload, uploading, reports }: UploadsProps) 
   const [error, setError] = useState<string | null>(null);
   const [previewName, setPreviewName] = useState<string | null>(null);
   const [downloadingPdf, setDownloadingPdf] = useState(false);
-  const latestReport = useMemo(() => reports[0] ?? null, [reports]);
+  const latestReport = useMemo(() => {
+    const report = reports[0] ?? null;
+    if (report) {
+      console.log("[DEBUG] Latest report:", {
+        id: report.id,
+        timeseriesCount: report.timeseries?.length || 0,
+        timeseries: report.timeseries?.map(s => ({
+          parameter: s.parameter,
+          pointsCount: s.points?.length || 0
+        }))
+      });
+    }
+    return report;
+  }, [reports]);
   
   async function handleDownloadPdf() {
-    if (!latestReport) return;
+    if (!latestReport) {
+      console.error("[ERROR] No latest report available");
+      setError("No report available to download");
+      return;
+    }
+    if (downloadingPdf) {
+      console.log("[DEBUG] Download already in progress, skipping");
+      return; // Prevent double download
+    }
+    console.log("[DEBUG] Attempting to download PDF for report:", latestReport.id);
     setDownloadingPdf(true);
+    setError(null);
     try {
       const blob = await downloadLatestReportPdf();
+      console.log("[DEBUG] PDF downloaded successfully, size:", blob.size);
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = `water_quality_report_${latestReport.id.slice(0, 8)}_${new Date().toISOString().split('T')[0]}.pdf`;
       document.body.appendChild(a);
       a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      // Small delay before cleanup to ensure download starts
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }, 100);
     } catch (err) {
+      console.error("[ERROR] PDF download failed:", err);
       setError(err instanceof Error ? err.message : "Failed to download PDF");
     } finally {
       setDownloadingPdf(false);
@@ -158,30 +186,113 @@ export default function Uploads({ onUpload, uploading, reports }: UploadsProps) 
                 </div>
               </div>
               <div className="grid gap-6 lg:grid-cols-2">
-                {latestReport.timeseries.map((series) => (
-                  <div key={series.parameter} className="rounded-2xl bg-slate-900/40 p-4">
-                    <p className="text-sm font-semibold text-white">{series.parameter}</p>
-                    <div className="mt-3 h-48">
-                      <ResponsiveContainer>
-                        <LineChart data={series.points}>
-                          <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                          <XAxis
-                            dataKey="timestamp"
-                            tickFormatter={(value) => new Date(value).toLocaleDateString()}
-                            minTickGap={24}
-                            stroke="#94a3b8"
-                          />
-                          <YAxis stroke="#94a3b8" />
-                          <Tooltip
-                            contentStyle={{ background: "#0f172a", borderRadius: 12, border: "1px solid #1e293b" }}
-                            labelFormatter={(value) => new Date(value).toLocaleString()}
-                          />
-                          <Line type="monotone" dataKey="value" stroke="#38bdf8" strokeWidth={2} dot={false} />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
+                {latestReport.timeseries && latestReport.timeseries.length > 0 ? (
+                  latestReport.timeseries.map((series, idx) => {
+                    console.log(`[DEBUG] Rendering chart ${idx} for ${series.parameter}:`, {
+                      parameter: series.parameter,
+                      pointsCount: series.points?.length || 0,
+                      firstPoint: series.points?.[0],
+                    });
+                    
+                    if (!series.points || series.points.length === 0) {
+                      return (
+                        <div key={series.parameter || idx} className="rounded-2xl bg-slate-900/40 p-4">
+                          <p className="text-sm font-semibold text-white mb-2">{series.parameter || "Unknown"}</p>
+                          <p className="text-xs text-slate-400">No data points available</p>
+                        </div>
+                      );
+                    }
+                    
+                    // Transform points for Recharts - ensure proper format with error handling
+                    const chartData = series.points
+                      .filter(p => p && p.timestamp && (p.value != null && !isNaN(Number(p.value))))
+                      .map((point) => {
+                        try {
+                          const timestamp = point.timestamp;
+                          const value = Number(point.value);
+                          if (isNaN(value)) {
+                            console.warn(`[WARN] Invalid value for point:`, point);
+                            return null;
+                          }
+                          return {
+                            timestamp: timestamp,
+                            value: value,
+                            date: new Date(timestamp).toLocaleDateString(),
+                            time: new Date(timestamp).toLocaleTimeString(),
+                          };
+                        } catch (e) {
+                          console.error("[ERROR] Failed to parse point:", point, e);
+                          return null;
+                        }
+                      })
+                      .filter(p => p !== null);
+                    
+                    if (chartData.length === 0) {
+                      return (
+                        <div key={series.parameter || idx} className="rounded-2xl bg-slate-900/40 p-4">
+                          <p className="text-sm font-semibold text-white mb-2">{series.parameter || "Unknown"}</p>
+                          <p className="text-xs text-slate-400">No valid data points after filtering</p>
+                        </div>
+                      );
+                    }
+                    
+                    return (
+                      <div key={series.parameter || idx} className="rounded-2xl bg-slate-900/40 p-4">
+                        <p className="text-sm font-semibold text-white mb-2">{series.parameter || "Unknown"}</p>
+                        <div className="mt-3 h-48 w-full">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <LineChart data={chartData}>
+                              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                              <XAxis
+                                dataKey="timestamp"
+                                tickFormatter={(value) => {
+                                  try {
+                                    return new Date(value).toLocaleDateString();
+                                  } catch {
+                                    return String(value);
+                                  }
+                                }}
+                                minTickGap={24}
+                                stroke="#94a3b8"
+                                fontSize={12}
+                              />
+                              <YAxis stroke="#94a3b8" fontSize={12} />
+                              <Tooltip
+                                contentStyle={{ background: "#0f172a", borderRadius: 12, border: "1px solid #1e293b", color: "#fff" }}
+                                labelFormatter={(value) => {
+                                  try {
+                                    return new Date(value).toLocaleString();
+                                  } catch {
+                                    return String(value);
+                                  }
+                                }}
+                                formatter={(value: number) => [value?.toFixed(2) || "N/A", "Value"]}
+                              />
+                              <Line 
+                                type="monotone" 
+                                dataKey="value" 
+                                stroke="#38bdf8" 
+                                strokeWidth={2} 
+                                dot={{ r: 3 }} 
+                                activeDot={{ r: 5 }}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="col-span-2 rounded-2xl border border-dashed border-white/10 p-10 text-center text-slate-400">
+                    <p>No timeseries data available for plotting</p>
+                    <p className="text-xs mt-2">
+                      {latestReport.timeseries ? 
+                        `Report has ${latestReport.timeseries.length} timeseries but they may be empty` :
+                        "Report has no timeseries property"}
+                    </p>
+                    <p className="text-xs mt-1">Check browser console (F12) for debug information</p>
                   </div>
-                ))}
+                )}
               </div>
             </div>
 

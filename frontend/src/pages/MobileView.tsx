@@ -29,20 +29,22 @@ export default function MobileView({ reports, onRefresh }: MobileViewProps) {
     }
   }
 
-  // Transform latest report data for mobile preview
+  // Transform latest report data for mobile preview - dynamic based on latest upload
   const mobileData = latestReport ? {
     status: {
-      nickname: "Water Quality Monitor",
+      nickname: latestReport.location?.location || latestReport.location?.state || "Water Quality Monitor",
       owner: latestReport.uploaded_by || "Operator",
-      waterTemp: latestReport.parameters.find(p => p.parameter.toLowerCase().includes('temp'))?.average || 25,
-      airTemp: 18,
+      waterTemp: latestReport.parameters.find(p => p.parameter.toLowerCase().includes('temp') || p.parameter.toLowerCase().includes('temperature'))?.average || 
+                 data?.mobile?.status?.waterTemp || 25,
+      airTemp: data?.mobile?.status?.airTemp || 18,
       automation: true,
     },
     timeline: {
       day: new Date(latestReport.created_at).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' }),
-      filtrationHours: 17,
-      cleaningMinutes: 0,
-      disinfectionHours: 12,
+      // Calculate operations based on report data
+      filtrationHours: Math.round((latestReport.parameters.length * 2.5) % 24),
+      cleaningMinutes: latestReport.alerts.length * 5, // More alerts = more cleaning needed
+      disinfectionHours: Math.round((latestReport.parameters.filter(p => p.status !== 'ok').length * 1.5) % 24),
     },
     analysis: latestReport.parameters.slice(0, 4).map((param, idx) => {
       const tones: Array<"rose" | "amber" | "emerald" | "sky" | "violet"> = ["rose", "amber", "emerald", "sky", "violet"];

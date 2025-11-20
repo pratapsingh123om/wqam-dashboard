@@ -121,6 +121,13 @@ class MLInsights(BaseModel):
     model_available: bool = False
 
 
+class LocationInfo(BaseModel):
+    state: str | None = None
+    location: str | None = None
+    latitude: float | None = None
+    longitude: float | None = None
+
+
 class UploadReport(BaseModel):
     id: str
     uploaded_by: str
@@ -130,4 +137,6 @@ class UploadReport(BaseModel):
     timeseries: list[ParameterSeries]
     alerts: list[Alert]
     recommendations: list[str]
+    location: LocationInfo | None = None
+    map_status: Literal["good", "warning", "poor"] = "good"
     ml_insights: MLInsights | None = None

@@ -138,6 +138,7 @@ export default function App() {
             loading={loadingDashboard}
             error={dashboardError}
             onRefresh={loadDashboard}
+            reports={reports}
           />
         );
     }
@@ -191,17 +192,17 @@ export default function App() {
               </div>
               <MobilePreview
                 status={reports[0] ? {
-                  nickname: "Water Quality Monitor",
+                  nickname: reports[0].location?.location || reports[0].location?.state || "Water Quality Monitor",
                   owner: reports[0].uploaded_by || dashboardData?.mobile.status?.owner || "Operator",
-                  waterTemp: reports[0].parameters.find(p => p.parameter.toLowerCase().includes('temp'))?.average || dashboardData?.mobile.status?.waterTemp || 25,
+                  waterTemp: reports[0].parameters.find(p => p.parameter.toLowerCase().includes('temp') || p.parameter.toLowerCase().includes('temperature'))?.average || dashboardData?.mobile.status?.waterTemp || 25,
                   airTemp: dashboardData?.mobile.status?.airTemp || 18,
                   automation: dashboardData?.mobile.status?.automation || true,
                 } : dashboardData?.mobile.status}
                 timeline={reports[0] ? {
                   day: new Date(reports[0].created_at).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' }),
-                  filtrationHours: dashboardData?.mobile.timeline?.filtrationHours || 17,
-                  cleaningMinutes: dashboardData?.mobile.timeline?.cleaningMinutes || 0,
-                  disinfectionHours: dashboardData?.mobile.timeline?.disinfectionHours || 12,
+                  filtrationHours: Math.round((reports[0].parameters.length * 2.5) % 24),
+                  cleaningMinutes: reports[0].alerts.length * 5,
+                  disinfectionHours: Math.round((reports[0].parameters.filter(p => p.status !== 'ok').length * 1.5) % 24),
                 } : dashboardData?.mobile.timeline}
                 analysis={reports[0] ? reports[0].parameters.slice(0, 4).map((param, idx) => {
                   const tones: Array<"rose" | "amber" | "emerald" | "sky" | "violet"> = ["rose", "amber", "emerald", "sky", "violet"];

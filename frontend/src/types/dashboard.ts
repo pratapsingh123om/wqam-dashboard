@@ -104,6 +104,13 @@ export interface MLInsights {
   model_available: boolean;
 }
 
+export interface LocationInfo {
+  state?: string | null;
+  location?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+}
+
 export interface UploadReport {
   id: string;
   uploaded_by: string;
@@ -113,6 +120,8 @@ export interface UploadReport {
   timeseries: ParameterSeries[];
   alerts: DashboardAlert[];
   recommendations: string[];
+  location?: LocationInfo | null;
+  map_status?: SiteStatus;
   ml_insights?: MLInsights | null;
 }
 

@@ -68,8 +68,25 @@ def prepare_features(df: pd.DataFrame) -> Optional[np.ndarray]:
     # Keep only numeric columns
     numeric_df = df.select_dtypes(include=[np.number])
     
-    if numeric_df.shape[1] < 3:
+    if numeric_df.shape[1] < 1:
         return None
+    
+    # Check what the model expects
+    expected_features = getattr(model, 'n_features_in_', None)
+    
+    # If model has a specific feature count, match it
+    if expected_features is not None:
+        # Take first N features to match model
+        if numeric_df.shape[1] > expected_features:
+            numeric_df = numeric_df.iloc[:, :expected_features]
+        elif numeric_df.shape[1] < expected_features:
+            # Pad with zeros if we have fewer features
+            padding = pd.DataFrame(
+                np.zeros((numeric_df.shape[0], expected_features - numeric_df.shape[1])),
+                columns=[f'pad_{i}' for i in range(expected_features - numeric_df.shape[1])],
+                index=numeric_df.index
+            )
+            numeric_df = pd.concat([numeric_df, padding], axis=1)
     
     # Impute missing values
     try:

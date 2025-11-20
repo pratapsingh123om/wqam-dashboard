@@ -1,4 +1,4 @@
-﻿import apiFetch from "./api";
+﻿import { apiFetch } from "./api";
 
 export async function login(username: string, password: string) {
   return apiFetch<{

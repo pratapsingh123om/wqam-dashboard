@@ -8,7 +8,7 @@ export function setAuthToken(token: string | null) {
   authToken = token;
 }
 
-async function apiFetch<T = unknown>(path: string, options: RequestInit = {}): Promise<T> {
+export async function apiFetch<T = unknown>(path: string, options: RequestInit = {}): Promise<T> {
   const isFormData = typeof FormData !== "undefined" && options.body instanceof FormData;
   const headers = new Headers(options.headers ?? {});
 
@@ -96,4 +96,4 @@ export async function downloadLatestReportPdf(): Promise<Blob> {
   return res.blob();
 }
 
-export default apiFetch;
+// apiFetch is exported above as a named export
