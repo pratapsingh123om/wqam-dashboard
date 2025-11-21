@@ -622,16 +622,22 @@ def _build_report_payload(df: pd.DataFrame, username: str, filename: str | None,
             "model_available": ml_insights.get("model_available", False),
         },
     }
-@app.post("/api/auth/register", response_model=schemas.UserOut)
+@app.post("/api/auth/register", response_model=schemas.UserOut, status_code=201)
 def register(user_in: schemas.UserCreate, db: Session = Depends(get_db)):
     exists = db.query(models.User).filter(models.User.username == user_in.username).first()
     if exists:
         raise HTTPException(status_code=400, detail="Username already exists")
-    # if role is admin, allow creation always for now (can be restricted in prod)
+    
+    # Enforce valid roles for self-registration
+    valid_roles = ["validator", "user", "business", "plant"]
+    if user_in.role and user_in.role not in valid_roles:
+        raise HTTPException(status_code=400, detail=f"Invalid role '{user_in.role}'. Allowed roles: {', '.join(valid_roles)}")
+    
     user = models.User(
         username=user_in.username,
         hashed_password=hash_password(user_in.password),
-        role=user_in.role or "user"
+        role=user_in.role or "user" # Role from input or default to "user"
+        # is_active will default to False from models.py
     )
     db.add(user)
     db.commit()
@@ -643,12 +649,41 @@ def login(form: schemas.UserCreate, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.username == form.username).first()
     if not user or not verify_password(form.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Incorrect username or password")
+    if not user.is_active: # New check
+        raise HTTPException(status_code=403, detail="Account is not active. Please contact administrator for approval.")
     access_token = create_access_token({"sub": user.username, "role": user.role})
     return {"access_token": access_token, "token_type": "bearer", "role": user.role}
 
 @app.get("/api/auth/me", response_model=schemas.UserOut)
 def me(current_user: models.User = Depends(get_current_user)):
     return current_user
+
+
+# Admin-specific dependency
+def get_admin_user(current_user: models.User = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Only admins can access this resource")
+    return current_user
+
+@app.get("/api/admin/pending-users", response_model=list[schemas.UserOut])
+def get_pending_users(db: Session = Depends(get_db), admin_user: models.User = Depends(get_admin_user)):
+    pending_users = db.query(models.User).filter(models.User.is_active == False).all()
+    return pending_users
+
+@app.post("/api/admin/approve-user/{user_id}", response_model=schemas.UserOut)
+def approve_user(user_id: int, db: Session = Depends(get_db), admin_user: models.User = Depends(get_admin_user)):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    if user.is_active:
+        raise HTTPException(status_code=400, detail="User is already active")
+    
+    user.is_active = True
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
 
 # simple health
 @app.get("/api/health")

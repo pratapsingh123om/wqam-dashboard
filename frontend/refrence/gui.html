@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WQAM Dashboard Demo — Dark Themed</title>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --panel:#0f1720;
+      --muted:#9aa6b2;
+      --accent:#7c3aed;
+      --success:#10b981;
+      --danger:#ef4444;
+      --glass: rgba(255,255,255,0.03);
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#061018,#071827);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
+    .app{display:flex;gap:20px;padding:22px;box-sizing:border-box;height:100%;}
+    .col{flex:1;min-width:300px;display:flex;flex-direction:column;gap:16px}
+    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:12px; padding:16px; box-shadow: 0 6px 30px rgba(2,6,23,0.7); border:1px solid rgba(255,255,255,0.03); color:#e6eef6}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+    h1{font-size:1.05rem;margin:0}
+    .muted{color:var(--muted);font-size:0.9rem}
+    .top-actions{display:flex;gap:8px;align-items:center}
+    button{background:var(--glass);color:inherit;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),#4f46e5);box-shadow:0 6px 18px rgba(79,70,229,0.12)}
+    .btn-success{background:linear-gradient(90deg,var(--success),#34d399)}
+    .btn-danger{background:linear-gradient(90deg,var(--danger),#fb7185)}
+    input[type=file]{display:none}
+    .file-row{display:flex;gap:8px;align-items:center}
+    .kpis{display:flex;gap:10px;flex-wrap:wrap}
+    .kpi{flex:1;min-width:120px;background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.02));padding:12px;border-radius:10px}
+    .role-pill{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);cursor:pointer}
+    .role-pill.active{outline:2px solid rgba(255,255,255,0.03)}
+    .user-card{display:flex;align-items:center;justify-content:space-between;padding:10px;border-radius:10px;background:rgba(255,255,255,0.01)}
+    .chart-wrap{height:240px}
+    .controls{display:flex;gap:8px;flex-wrap:wrap}
+    .user-list{max-height:200px;overflow:auto;display:flex;flex-direction:column;gap:8px}
+    .badge{padding:6px 8px;border-radius:8px;font-weight:700;font-size:0.85rem}
+    .admin .badge{background:linear-gradient(90deg,#f97316,#f59e0b)}
+    .industry .badge{background:linear-gradient(90deg,#06b6d4,#0891b2)}
+    .validator .badge{background:linear-gradient(90deg,#8b5cf6,#6d28d9)}
+    footer{color:var(--muted);font-size:0.8rem;text-align:center;margin-top:10px}
+    .flex-row{display:flex;gap:8px;align-items:center}
+    .small{font-size:0.82rem;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div style="padding:18px 22px;display:flex;align-items:center;justify-content:space-between;color:#e6eef6">
+    <div style="display:flex;gap:14px;align-items:center">
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='%237c3aed'><path d='M12 2L2 7v10l10 5 10-5V7z'/></svg>" alt="logo" style="border-radius:8px;"/>
+      <div>
+        <div style="font-weight:800">WQAM Dashboard — Demo</div>
+        <div class="small">Water Quality AI Monitoring — dark demo</div>
+      </div>
+    </div>
+    <div class="top-actions">
+      <div class="small muted">Model file (placeholder):</div>
+      <div style="font-family:monospace;background:rgba(255,255,255,0.02);padding:6px 10px;border-radius:8px;font-size:0.85rem;color:#cfe8ff" id="modelPath">file:///C:/Users/gsr33/wqam-dashboard/data/row/model.pkl</div>
+      <button id="download-log" class="btn-primary">Download sample report</button>
+    </div>
+  </div>
+
+  <div class="app">
+    <!-- Admin column -->
+    <div class="col">
+      <div class="panel admin">
+        <header><h1>Admin Control Panel</h1><div class="muted">Approve users, manage validators</div></header>
+
+        <div class="controls">
+          <button id="btn-scan" class="btn-primary">Scan Repo (mock)</button>
+          <button id="btn-refresh-users">Refresh Users</button>
+          <div style="flex:1"></div>
+          <label class="role-pill active" data-role="admin">Admin</label>
+          <label class="role-pill" data-role="industry">Industry</label>
+          <label class="role-pill" data-role="validator">Validator</label>
+        </div>
+
+        <h3 style="margin-top:12px">Pending approvals</h3>
+        <div class="user-list" id="pendingList">
+          <!-- Filled by JS -->
+        </div>
+
+        <h3 style="margin-top:12px">Create user</h3>
+        <div style="display:flex;gap:8px">
+          <input id="newUserName" placeholder="Name" style="flex:1;padding:8px;border-radius:8px;border:none;background:rgba(255,255,255,0.02);color:#e6eef6"/>
+          <select id="newUserRole" style="padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);color:#e6eef6">
+            <option value="industry">Industry (Plant)</option>
+            <option value="validator">Validator</option>
+            <option value="admin">Admin</option>
+          </select>
+          <button id="createUserBtn">Create</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <header><h1>Uploads & Model</h1><div class="muted">Upload PDFs, analyze, download reports</div></header>
+
+        <div class="file-row">
+          <label for="pdfUpload" class="btn-primary" style="cursor:pointer">Upload PDFs</label>
+          <input id="pdfUpload" type="file" accept="application/pdf" multiple />
+          <div id="filesInfo" class="muted small">No files chosen</div>
+        </div>
+
+        <div style="margin-top:10px" class="controls">
+          <button id="analyzeBtn" class="btn-success">Analyze (run model)</button>
+          <button id="genReportBtn" class="btn-primary">Generate Report</button>
+          <button id="downloadReportBtn" class="btn-primary">Download Report</button>
+        </div>
+
+        <div style="margin-top:12px" class="small muted">
+          Notes: This demo sends files to <code>/api/upload</code> and analysis to <code>/api/analyze</code>. Replace these endpoints in the JS to call your API or your local model file.
+        </div>
+      </div>
+
+      <div class="panel">
+        <header><h1>Activity</h1><div class="muted">Logs & short messages</div></header>
+        <pre id="log" style="white-space:pre-wrap;color:#cfe8ff;max-height:200px;overflow:auto;background:transparent;border-radius:8px;padding:8px"></pre>
+      </div>
+    </div>
+
+    <!-- Middle column: Industry / Plant -->
+    <div class="col">
+      <div class="panel industry">
+        <header><h1>Industry / Plant Dashboard</h1><div class="muted">STP/WTP plant metrics & suggestions</div></header>
+
+        <div class="kpis" id="kpiRow">
+          <div class="kpi">
+            <div class="muted">pH</div>
+            <div style="font-size:1.2rem;font-weight:800">7.3</div>
+            <div class="small muted">Target 6.8 – 7.2</div>
+          </div>
+          <div class="kpi">
+            <div class="muted">Turbidity (NTU)</div>
+            <div style="font-size:1.2rem;font-weight:800">3.2</div>
+            <div class="small muted">Acceptable &lt; 5</div>
+          </div>
+          <div class="kpi">
+            <div class="muted">BOD (mg/L)</div>
+            <div style="font-size:1.2rem;font-weight:800">18</div>
+            <div class="small muted">Action: monitor</div>
+          </div>
+        </div>
+
+        <div style="margin-top:14px">
+          <h3 style="margin:6px 0">Parameter trends</h3>
+          <div class="chart-wrap panel" style="padding:8px">
+            <canvas id="timeSeriesChart"></canvas>
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <h3 style="margin:6px 0">AI Suggestion</h3>
+          <div style="padding:10px;border-radius:8px;background:rgba(0,0,0,0.15)">
+            <strong id="aiSuggestion">No analysis run yet. Click Analyze to run the model and get suggestions & treatment steps.</strong>
+            <ul id="treatmentSteps" style="margin-top:8px"></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <header><h1>Reports</h1><div class="muted">Saved reports & download</div></header>
+        <div id="reportsList" class="user-list"></div>
+      </div>
+    </div>
+
+    <!-- Right column: Validators / quick controls -->
+    <div class="col">
+      <div class="panel validator">
+        <header><h1>Validator Panel</h1><div class="muted">Verify model outputs & approve treatments</div></header>
+
+        <div id="validatorQueue" class="user-list">
+        </div>
+
+        <div style="margin-top:10px">
+          <h3>Quick Validate</h3>
+          <div style="display:flex;gap:8px">
+            <select id="reportSelect" style="flex:1;padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);color:#e6eef6"></select>
+            <button id="approveBtn" class="btn-primary">Approve</button>
+            <button id="rejectBtn" class="btn-danger">Reject</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <header><h1>Settings</h1><div class="muted">Base URL & integration</div></header>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <label class="small muted">Backend API base URL</label>
+          <input id="apiBase" placeholder="e.g. http://localhost:8000" style="padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);color:#e6eef6"/>
+          <label class="small muted">Model file URL (optional for direct model call)</label>
+          <input id="modelUrlInput" placeholder="file:///... or https://..." style="padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);color:#e6eef6"/>
+          <div class="small muted">Tip: Set the Model file path to your local model path if you serve it locally. Otherwise configure API endpoints on your backend.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer style="padding:14px 22px;color:var(--muted)">WQAM Dashboard — demo UI — replace endpoints with your backend/model & wire auth.</footer>
+
+<script>
+/*
+  Demo UI behavior:
+  - Upload PDFs (files stored in memory until uploaded)
+  - Analyze button will either:
+      * POST files to `${apiBase}/upload` then POST analyze to `${apiBase}/analyze`,
+      OR
+      * If `modelUrl` is a file:/// path or local endpoint, will call that (user must implement backend that reads local model file)
+  - Chart uses Chart.js to show time-series mock or model output
+  - Download Report exports the last analysis result as JSON file
+*/
+
+const modelPathPlaceholder = 'file:///C:/Users/gsr33/wqam-dashboard/data/row/model.pkl'; // <-- your path mentioned earlier
+document.getElementById('modelPath').textContent = modelPathPlaceholder;
+
+let apiBase = ''; // set by user; default empty -> use relative endpoints
+let modelUrl = modelPathPlaceholder; // placeholder (change in UI)
+let uploadedFiles = [];
+let lastReport = null;
+const logEl = document.getElementById('log');
+
+function log(msg){
+  const ts = new Date().toLocaleTimeString();
+  logEl.textContent = `[${ts}] ${msg}\n` + logEl.textContent;
+}
+
+// Files UI
+const pdfUpload = document.getElementById('pdfUpload');
+const filesInfo = document.getElementById('filesInfo');
+pdfUpload.addEventListener('change', e=>{
+  uploadedFiles = Array.from(e.target.files);
+  filesInfo.textContent = uploadedFiles.length ? uploadedFiles.map(f=>f.name).join(', ') : 'No files chosen';
+  log(`Selected ${uploadedFiles.length} file(s)`);
+});
+
+// API base & model input wiring
+document.getElementById('apiBase').addEventListener('input', e=> apiBase = e.target.value.trim());
+document.getElementById('modelUrlInput').addEventListener('input', e=> modelUrl = e.target.value.trim() || modelPathPlaceholder);
+
+// Analyze button behavior
+document.getElementById('analyzeBtn').addEventListener('click', async ()=>{
+  if (!uploadedFiles.length) {
+    alert('Please choose PDFs first (Upload PDFs).');
+    return;
+  }
+  log('Starting analysis...');
+  try {
+    // Step 1: upload files if your backend accepts them
+    let uploadResponse = null;
+    if (apiBase) {
+      const upUrl = (apiBase.replace(/\/$/,'') || '') + '/api/upload';
+      const fd = new FormData();
+      uploadedFiles.forEach(f => fd.append('files', f, f.name));
+      log(`Uploading ${uploadedFiles.length} files to ${upUrl}...`);
+      const r = await fetch(upUrl, { method:'POST', body: fd });
+      uploadResponse = r.ok ? await r.json() : null;
+      log('Upload response: ' + (r.ok ? 'ok' : `failed (${r.status})`));
+    } else {
+      log('Skipping upload step (no apiBase set).');
+    }
+
+    // Step 2: call analyze endpoint or local model URL
+    let analysisResult = null;
+    if (apiBase) {
+      const analyzeUrl = (apiBase.replace(/\/$/,'')||'') + '/api/analyze';
+      const payload = { files: uploadedFiles.map(f=>f.name), uploadMeta: uploadResponse || null };
+      log('Requesting analysis from ' + analyzeUrl);
+      const r = await fetch(analyzeUrl, {
+        method:'POST',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!r.ok) throw new Error('Analyze API failed: ' + r.status);
+      analysisResult = await r.json();
+    } else {
+      // No backend: run a local "mock model" routine that simulates output
+      analysisResult = await runMockAnalysis(uploadedFiles);
+      log('Ran mock analysis locally (no backend set).');
+    }
+
+    // Store report
+    lastReport = {
+      timestamp: (new Date()).toISOString(),
+      files: uploadedFiles.map(f=>f.name),
+      analysis: analysisResult
+    };
+    addReportToList(lastReport);
+    renderAnalysisToUI(analysisResult);
+    log('Analysis completed.');
+    alert('Analysis completed (report saved in Reports panel).');
+  } catch (err) {
+    console.error(err);
+    log('Error during analysis: ' + (err.message || err));
+    alert('Error: ' + (err.message || err));
+  }
+});
+
+// Generate report button: create a human readable summary in the UI
+document.getElementById('genReportBtn').addEventListener('click', ()=>{
+  if (!lastReport) { alert('Run analysis first'); return; }
+  // Here you could convert JSON into a PDF via backend. We create a downloadable JSON summary.
+  const summary = {
+    title: 'WQAM Analysis Summary',
+    generatedAt: new Date().toISOString(),
+    files: lastReport.files,
+    topFindings: lastReport.analysis.topFindings || [],
+    suggestions: lastReport.analysis.suggestions || []
+  };
+  lastReport.summary = summary;
+  addReportToList(lastReport);
+  alert('Report summary generated and saved to Reports list.');
+});
+
+// Download JSON report
+document.getElementById('downloadReportBtn').addEventListener('click', ()=>{
+  if (!lastReport) { alert('No report to download. Run analysis first.'); return; }
+  const blob = new Blob([JSON.stringify(lastReport, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `wqam-report-${(new Date()).toISOString().replace(/[:.]/g,'-')}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  log('Downloaded latest report (JSON).');
+});
+
+// mock analysis (simulate ML output) -- replace with your model call
+async function runMockAnalysis(files){
+  // simulate time-series data and suggestions
+  await new Promise(r=>setTimeout(r, 800));
+  const now = Date.now();
+  const series = ['pH','Turbidity','BOD','DO'].map((name, idx)=>{
+    return {
+      name,
+      values: Array.from({length:24}, (_,i)=>({
+        ts: new Date(now - (23-i)*3600*1000).toISOString(),
+        value: Math.round(( (idx+1) * Math.random()*2 + (idx+1)*5 ) * 10)/10
+      }))
+    };
+  });
+  const suggestions = [
+    {severity:'medium', text:'Increase aeration for next 48 hours.'},
+    {severity:'low', text:'Monitor pH hourly and record adjustments.'}
+  ];
+  return {
+    topFindings: [
+      {name:'pH', value:7.3, note:'Slightly high compared to target.'},
+      {name:'BOD', value:18, note:'Above preferred limit, consider treatment.'}
+    ],
+    series,
+    suggestions
+  };
+}
+
+// UI render of analysis
+function renderAnalysisToUI(analysis){
+  // Chart: show first series
+  const ctx = document.getElementById('timeSeriesChart').getContext('2d');
+  const primary = analysis.series && analysis.series.length ? analysis.series[0] : null;
+  const labels = primary ? primary.values.map(v=> new Date(v.ts).toLocaleString()) : [];
+  const datasets = analysis.series.map((s, i) => ({
+    label: s.name,
+    data: s.values.map(v => v.value),
+    borderWidth: 2,
+    tension: 0.25,
+    borderColor: i===0 ? '#4f46e5' : (i===1 ? '#06b6d4' : '#f97316'),
+    backgroundColor: 'transparent',
+    pointRadius: 1
+  }));
+  if (window._wqamChart) window._wqamChart.destroy();
+  window._wqamChart = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive:true,
+      plugins: { legend: { labels: { color:'#dbeafe' } } },
+      scales: {
+        x: { ticks: { color:'#94a3b8' }, grid: { color:'rgba(255,255,255,0.03)' } },
+        y: { ticks: { color:'#94a3b8' }, grid: { color:'rgba(255,255,255,0.03)' } }
+      }
+    }
+  });
+
+  // AI suggestion
+  document.getElementById('aiSuggestion').textContent = analysis.suggestions && analysis.suggestions.length ? analysis.suggestions[0].text : 'No suggestions.';
+  const list = document.getElementById('treatmentSteps');
+  list.innerHTML = '';
+  (analysis.suggestions || []).forEach(s => {
+    const li = document.createElement('li');
+    li.textContent = `${s.severity.toUpperCase()}: ${s.text}`;
+    list.appendChild(li);
+  });
+}
+
+// Reports list helper
+function addReportToList(report){
+  const rList = document.getElementById('reportsList');
+  const card = document.createElement('div');
+  card.className = 'user-card';
+  card.innerHTML = `<div><div style="font-weight:700">${report.files.join(', ')}</div><div class="small muted">${report.timestamp}</div></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-primary small" style="padding:6px 8px">View</button>
+      <button class="btn-success small" style="padding:6px 8px">Mark Valid</button>
+    </div>`;
+  rList.prepend(card);
+
+  // add to validator select
+  const sel = document.getElementById('reportSelect');
+  const opt = document.createElement('option');
+  opt.value = report.timestamp;
+  opt.textContent = `${report.timestamp} — ${report.files.join(', ')}`;
+  sel.prepend(opt);
+
+  // add to validator queue
+  const q = document.getElementById('validatorQueue');
+  const vcard = document.createElement('div');
+  vcard.className = 'user-card';
+  vcard.innerHTML = `<div><div style="font-weight:700">${report.files.join(', ')}</div><div class="small muted">${report.timestamp}</div></div>
+    <div><button class="btn-primary" style="padding:6px 8px">Inspect</button></div>`;
+  q.prepend(vcard);
+}
+
+// pending approvals mock
+function addPending(name, role){
+  const p = document.getElementById('pendingList');
+  const el = document.createElement('div');
+  el.className='user-card';
+  el.innerHTML = `<div><div style="font-weight:800">${name}</div><div class="small muted">${role}</div></div>
+    <div style="display:flex;gap:8px"><button class="btn-primary">Approve</button><button class="btn-danger">Reject</button></div>`;
+  p.prepend(el);
+}
+
+// creation & admin features
+document.getElementById('createUserBtn').addEventListener('click', ()=>{
+  const name = document.getElementById('newUserName').value.trim();
+  const role = document.getElementById('newUserRole').value;
+  if (!name) return alert('Enter name');
+  addPending(name, role);
+  log(`Created pending user ${name} (${role})`);
+  document.getElementById('newUserName').value = '';
+});
+
+// Scan repo (mock)
+document.getElementById('btn-scan').addEventListener('click', ()=>{
+  log('Running diagnostics scan (mock)...');
+  setTimeout(()=> log('Diagnostics complete — no critical issues (mock).'), 800);
+});
+
+// Download sample report (button top-right)
+document.getElementById('download-log').addEventListener('click', ()=>{
+  const sample = {
+    sample: true,
+    generatedAt: (new Date()).toISOString(),
+    note: 'This is a sample report to test download flow.'
+  };
+  const blob = new Blob([JSON.stringify(sample,null,2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'wqam-sample-report.json'; a.click();
+  URL.revokeObjectURL(a.href);
+  log('Downloaded sample report.');
+});
+
+// role pill switching (affects styling)
+document.querySelectorAll('.role-pill').forEach(p=>{
+  p.addEventListener('click', ()=>{
+    document.querySelectorAll('.role-pill').forEach(q=>q.classList.remove('active'));
+    p.classList.add('active');
+    // highlight a column accordingly
+    const role = p.dataset.role;
+    document.querySelector('.admin').style.borderColor = 'transparent';
+    document.querySelector('.industry').style.borderColor = 'transparent';
+    document.querySelector('.validator').style.borderColor = 'transparent';
+    if (role === 'admin') document.querySelector('.admin').style.borderColor = '#f97316';
+    if (role === 'industry') document.querySelector('.industry').style.borderColor = '#06b6d4';
+    if (role === 'validator') document.querySelector('.validator').style.borderColor = '#8b5cf6';
+  });
+});
+
+// Approval / validator quick actions
+document.getElementById('approveBtn').addEventListener('click', ()=>{
+  const sel = document.getElementById('reportSelect'); if (!sel.value) return alert('Select a report');
+  log(`Validator approved report ${sel.value}`);
+  alert('Report approved (mock).');
+});
+document.getElementById('rejectBtn').addEventListener('click', ()=>{
+  const sel = document.getElementById('reportSelect'); if (!sel.value) return alert('Select a report');
+  log(`Validator rejected report ${sel.value}`);
+  alert('Report rejected (mock).');
+});
+
+// Boot sample content
+addPending('Plant A - operator','industry');
+addPending('Validator Zoe','validator');
+
+log('UI ready. Set API base and model URL in Settings to integrate with backend.');
+
+</script>
+</body>
+</html>

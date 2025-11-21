@@ -13,7 +13,13 @@ def create_admin(username="admin", password="admin123"):
         # Check if admin already exists
         existing = db.query(User).filter(User.username == username).first()
         if existing:
-            print(f"User '{username}' already exists!")
+            print(f"User '{username}' already exists. Updating password and setting to active.")
+            existing.hashed_password = hash_password(password)
+            existing.is_active = True
+            db.add(existing)
+            db.commit()
+            db.refresh(existing)
+            print(f"✅ Admin user '{username}' updated successfully!")
             return
         
         # Create admin user

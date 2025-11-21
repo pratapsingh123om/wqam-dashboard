@@ -1,6 +1,197 @@
-﻿@tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* keep this file simple — avoid using @apply for classes that might be missing */
-html,body,#root { height: 100%; }
+/* Custom CSS Variables from gui.html */
+:root {
+  --bg: #0b0f14;
+  --panel: #0f1720;
+  --muted: #9aa6b2;
+  --accent: #7c3aed;
+  --success: #10b981;
+  --danger: #ef4444;
+  --glass: rgba(255, 255, 255, 0.03);
+}
+
+/* Global styles from gui.html */
+html, body {
+  height: 100%;
+  margin: 0;
+  background: linear-gradient(180deg, var(--bg), #071827); /* Using CSS var for --bg */
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+#root {
+  height: 100%;
+}
+
+/* Base styles for components inspired by gui.html */
+.app {
+  display: flex;
+  gap: 20px;
+  padding: 22px;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.col {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.panel {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 6px 30px rgba(2, 6, 23, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  color: #e6eef6;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+h1 {
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.top-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+button {
+  background: var(--glass);
+  color: inherit;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, var(--accent), #4f46e5);
+  box-shadow: 0 6px 18px rgba(79, 70, 229, 0.12);
+}
+
+.btn-success {
+  background: linear-gradient(90deg, var(--success), #34d399);
+}
+
+.btn-danger {
+  background: linear-gradient(90deg, var(--danger), #fb7185);
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.file-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.kpis {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.kpi {
+  flex: 1;
+  min-width: 120px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.02));
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.role-pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+}
+
+.role-pill.active {
+  outline: 2px solid rgba(255, 255, 255, 0.03);
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.chart-wrap {
+  height: 240px;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.user-list {
+  max-height: 200px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.badge {
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.admin .badge {
+  background: linear-gradient(90deg, #f97316, #f59e0b);
+}
+
+.industry .badge {
+  background: linear-gradient(90deg, #06b6d4, #0891b2);
+}
+
+.validator .badge {
+  background: linear-gradient(90deg, #8b5cf6, #6d28d9);
+}
+
+footer {
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.flex-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.small {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
